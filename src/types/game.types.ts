@@ -24,7 +24,11 @@ export enum CardEffectType {
   DEBUFF_ATTACK = 'DEBUFF_ATTACK',
   DEBUFF_DEFENSE = 'DEBUFF_DEFENSE',
   STUN = 'STUN',
-  DOUBLE_DAMAGE = 'DOUBLE_DAMAGE'
+  DOUBLE_DAMAGE = 'DOUBLE_DAMAGE',
+  BUFF_ENERGY = 'BUFF_ENERGY',
+  DEBUFF_ENERGY = 'DEBUFF_ENERGY',
+  BUFF_SPEED = 'BUFF_SPEED',
+  DEBUFF_SPEED = 'DEBUFF_SPEED'
 }
 
 export enum TargetType {
@@ -68,13 +72,14 @@ export interface Jablix {
   cards: Card[];
   currentAttackBuff: number;
   currentDefenseBuff: number;
+  currentSpeedBuff: number;
   shield: number;
   isStunned: boolean;
   statusEffects: StatusEffect[];
 }
 
 export interface StatusEffect {
-  type: 'ATTACK_BUFF' | 'DEFENSE_BUFF' | 'ATTACK_DEBUFF' | 'DEFENSE_DEBUFF';
+  type: 'ATTACK_BUFF' | 'DEFENSE_BUFF' | 'ATTACK_DEBUFF' | 'DEFENSE_DEBUFF' | 'SPEED_BUFF' | 'SPEED_DEBUFF';
   value: number;
   duration: number;
 }

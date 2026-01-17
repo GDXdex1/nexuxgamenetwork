@@ -92,7 +92,7 @@ export function useBattleSocket(): UseBattleSocketReturn {
 
     try {
       // Suscribirse al canal de usuario
-      const channel = pusherClient.subscribeToUser(userAddress);
+      const channel = subscribeToUser(userAddress);
       userChannelRef.current = channel;
 
       // Escuchar battle_start en canal de usuario
@@ -146,11 +146,11 @@ export function useBattleSocket(): UseBattleSocketReturn {
 
     // Limpiar canal anterior si existe
     if (sessionChannelRef.current && sessionIdRef.current) {
-      pusherClient.unsubscribeFromSession(sessionIdRef.current);
+      unsubscribeFromSession(sessionIdRef.current);
     }
 
     // Suscribirse al canal de sesión
-    const channel = pusherClient.subscribeToSession(newSessionId);
+    const channel = subscribeToSession(newSessionId);
     sessionChannelRef.current = channel;
     sessionIdRef.current = newSessionId;
     setSessionId(newSessionId);
@@ -198,12 +198,12 @@ export function useBattleSocket(): UseBattleSocketReturn {
     console.log('[useBattleSocket] 🧹 Cleaning up Pusher channels');
 
     if (account?.address && userChannelRef.current) {
-      pusherClient.unsubscribeFromUser(account.address);
+      unsubscribeFromUser(account.address);
       userChannelRef.current = null;
     }
 
     if (sessionIdRef.current && sessionChannelRef.current) {
-      pusherClient.unsubscribeFromSession(sessionIdRef.current);
+      unsubscribeFromSession(sessionIdRef.current);
       sessionChannelRef.current = null;
       sessionIdRef.current = null;
     }

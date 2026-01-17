@@ -46,8 +46,8 @@ export function jablixToBattleStats(jablixId: string): JablixBattleStats {
     element: template.elements[0] || 'Normal',
     hp: template.hp,
     maxHp: template.hp,
-    energy: 3, // START WITH 3 ENERGY (Axie-style)
-    maxEnergy: 3,
+    energy: template.energy, // Initial energy is max energy
+    maxEnergy: template.energy,
     attack: template.baseAttack,
     defense: template.baseDefense,
     speed: template.speed,
@@ -75,6 +75,7 @@ function battleStatsToJablix(stats: JablixBattleStats): Jablix {
     cards: [],
     currentAttackBuff: 0,
     currentDefenseBuff: 0,
+    currentSpeedBuff: 0,
     shield: 0,
     isStunned: false,
     statusEffects: [],
@@ -151,7 +152,7 @@ export async function createBattle(
   console.log(`[BattleService] 🎮 Battle created: ${battleId}`);
   console.log(`[BattleService] 📡 Mode: ${mode}`);
   console.log(`[BattleService] 👥 Players: ${player1Address} vs ${player2Address}`);
-  console.log(`[BattleService] ⚡ Energy System: 3 per Jablix per turn`);
+  console.log(`[BattleService] ⚡ Energy System: 100-scale`);
 
   // If AI mode, DO NOT schedule AI moves here - they will be scheduled after player moves
   // This prevents the AI from moving before the player
@@ -294,9 +295,17 @@ async function resolveTurn(
     }
   }
 
-  // Reset energy for next turn (Axie-style)
-  p1Team.forEach(j => { if (j.hp > 0) j.energy = 3; });
-  p2Team.forEach(j => { if (j.hp > 0) j.energy = 3; });
+  // Regenerate energy for next turn
+  p1Team.forEach(j => {
+    if (j.hp > 0) {
+      j.energy = Math.min(j.maxEnergy, j.energy + 20);
+    }
+  });
+  p2Team.forEach(j => {
+    if (j.hp > 0) {
+      j.energy = Math.min(j.maxEnergy, j.energy + 20);
+    }
+  });
 
   // Update battle state
   battle.player1.team = p1Team.map(jablixToBattleStatsFromEngine);
@@ -356,7 +365,7 @@ function selectAIMoves(aiTeam: JablixBattleStats[]): BattleAction[] {
 
   // Select up to 3 cards (or until out of energy)
   let totalEnergy = 3;
-  
+
   for (let i = 0; i < aiTeam.length && totalEnergy > 0; i++) {
     const jablix = aiTeam[i];
     if (!jablix.is_alive) continue;
@@ -370,7 +379,7 @@ function selectAIMoves(aiTeam: JablixBattleStats[]): BattleAction[] {
 
     // Pick random card
     const selected = affordableCards[Math.floor(Math.random() * affordableCards.length)];
-    
+
     moves.push({
       sessionId: '', // Will be filled by caller
       jablix_idx: i,
@@ -394,7 +403,7 @@ async function scheduleAIMoves(battleId: string): Promise<void> {
   if (battle.mode !== 'ai') return;
 
   const aiMoves = selectAIMoves(battle.player2.team);
-  
+
   // Submit AI moves
   const pending = pendingActions.get(battleId) || {};
   pending.player2Moves = aiMoves;

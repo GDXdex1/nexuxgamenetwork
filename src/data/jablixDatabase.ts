@@ -146,7 +146,7 @@ function getElementsForType(typeId: number): Element[] {
     90: [Element.WATER], 91: [Element.ELECTRIC], 92: [Element.ELECTRIC], 93: [Element.WATER],
     94: [Element.WIND], 95: [Element.WIND]
   };
-  
+
   return elementMap[typeId] || [Element.WIND];
 }
 
@@ -173,7 +173,7 @@ function getNameForType(typeId: number): string {
     86: "Stonefox", 87: "Sunflare", 88: "Tesliux", 89: "Torrent", 90: "Tsiux",
     91: "Voltfang", 92: "Voltrix", 93: "Watlix", 94: "Winderix", 95: "Zephir"
   };
-  
+
   return nameMap[typeId] || `Jablix ${typeId}`;
 }
 
@@ -213,7 +213,7 @@ function getStatsForType(typeId: number): { hp: number; speed: number; attack: n
     91: [85, 130, 100, 115, 75], 92: [100, 182, 120, 145, 70], 93: [85, 80, 70, 80, 85],
     94: [115, 90, 120, 105, 85], 95: [90, 75, 95, 90, 75]
   };
-  
+
   const stats = statsMap[typeId] || [100, 80, 70, 80, 80];
   return {
     hp: stats[0],
@@ -238,12 +238,12 @@ function getCardIdsForElements(elements: Element[]): string[] {
     [Element.COSMIC]: ['quasar_blast', 'pulsar_beam', 'stellar_flare', 'nebula_heal'],
     [Element.EXRIX]: ['power_strike', 'exrix_blast', 'exrix_shield']
   };
-  
+
   const cards: string[] = [];
   for (const element of elements) {
     cards.push(...elementCards[element].slice(0, 2));
   }
-  
+
   return [...new Set(cards)].slice(0, 4);
 }
 
@@ -252,7 +252,7 @@ export const JABLIX_TEMPLATES: JablixTemplate[] = Array.from({ length: 95 }, (_:
   const typeId = index + 1;
   const elements = getElementsForType(typeId);
   const stats = getStatsForType(typeId);
-  
+
   return {
     id: typeId,
     name: getNameForType(typeId),
@@ -277,11 +277,12 @@ export function createJablix(template: JablixTemplate): Jablix {
     speed: template.speed,
     baseAttack: template.baseAttack,
     baseDefense: template.baseDefense,
-    energy: 3,
-    maxEnergy: 3,
+    energy: 100,
+    maxEnergy: 100,
     cards: template.cardIds.map((cardId: string) => CARD_DATABASE[cardId] || CARD_DATABASE['power_strike']),
     currentAttackBuff: 0,
     currentDefenseBuff: 0,
+    currentSpeedBuff: 0,
     shield: 0,
     isStunned: false,
     statusEffects: []
@@ -299,7 +300,7 @@ export function getJablixById(id: number): Jablix {
 export function createRandomTeam(count: number = 3): Jablix[] {
   const team: Jablix[] = [];
   const usedIds = new Set<number>();
-  
+
   while (team.length < count) {
     const randomId = Math.floor(Math.random() * 95) + 1;
     if (!usedIds.has(randomId)) {
@@ -307,7 +308,7 @@ export function createRandomTeam(count: number = 3): Jablix[] {
       team.push(getJablixById(randomId));
     }
   }
-  
+
   return team;
 }
 
