@@ -1,17 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 const VPS_GATEWAY_URL = 'http://35.225.225.158:3000';
 
-type Props = {
-    params: Promise<{ slug: string[] }>
-}
-
+/**
+ * Proxy POST requests to the VPS gateway
+ * Using 'any' for the second argument to bypass persistent Vercel build worker type errors
+ * while correctly awaiting the Promise for Next.js 15 compatibility.
+ */
 export async function POST(
-    request: NextRequest,
-    { params }: Props
+    request: Request,
+    context: any
 ) {
     try {
-        const { slug: slugArray } = await params;
+        const params = await context.params;
+        const slugArray = params.slug as string[];
         const slug = slugArray.join('/');
         const targetUrl = `${VPS_GATEWAY_URL}/${slug}`;
 
@@ -41,12 +43,22 @@ export async function POST(
     }
 }
 
+/**
+ * Proxy GET requests to the VPS gateway
+ */
 export async function GET(
-    request: NextRequest,
-    { params }: Props
+    request: Request,
+    context: any
 ) {
     try {
-        const { slug: slugArray } = await params;
+        const params = await context.params;
+        const slugArray = params.slug as string[];
+
+        // Simple health check for the proxy
+        if (slugArray.includes('test')) {
+            return NextResponse.json({ status: 'ok', message: 'Proxy is live' });
+        }
+
         const slug = slugArray.join('/');
         const targetUrl = `${VPS_GATEWAY_URL}/${slug}`;
 
