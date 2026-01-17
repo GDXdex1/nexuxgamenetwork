@@ -222,11 +222,10 @@ export default function BattleArena({ matchId, playerTeam, mode, onBackToMain }:
                                 </div>
                                 <span className="text-xs mt-1 text-blue-300 font-bold">{jablix.hp} HP</span>
 
-                                {/* Energy Dots */}
-                                <div className="flex gap-1 mt-1">
-                                    {[1, 2, 3].map(e => (
-                                        <div key={e} className={`w-2 h-2 rounded-full ${jablix.energy >= e ? 'bg-yellow-400' : 'bg-slate-700'}`} />
-                                    ))}
+                                {/* Energy Display */}
+                                <div className="mt-1 flex items-center gap-1 bg-slate-900/50 px-2 py-0.5 rounded-full border border-yellow-500/20">
+                                    <Zap className="w-3 h-3 text-yellow-500" />
+                                    <span className="text-[10px] font-bold text-yellow-400">{jablix.energy}/{jablix.max_energy || 100}</span>
                                 </div>
                             </div>
                         ))}
@@ -244,36 +243,44 @@ export default function BattleArena({ matchId, playerTeam, mode, onBackToMain }:
                             <div className="flex-1 space-y-2 overflow-y-auto">
                                 {myTeam && myTeam[selectedJablixIdx] ? (
                                     <>
-                                        <p className="text-xs text-slate-500 font-bold mb-2">
-                                            {myTeam[selectedJablixIdx].name.toUpperCase()}
-                                        </p>
-                                        {[0, 1, 2, 3].map((cardIdx) => {
+                                        <div className="flex justify-between items-center mb-2">
+                                            <p className="text-xs text-slate-400 font-bold">
+                                                {myTeam[selectedJablixIdx].name.toUpperCase()}
+                                            </p>
+                                            <Badge variant="outline" className="text-[10px] bg-yellow-500/10 text-yellow-500 border-yellow-500/20">
+                                                {myTeam[selectedJablixIdx].energy} E
+                                            </Badge>
+                                        </div>
+                                        {myTeam[selectedJablixIdx].cards?.map((card: any, cardIdx: number) => {
                                             const isSelected = selectedMoves.some(m => m.jablix_idx === selectedJablixIdx && m.card_idx === cardIdx);
-                                            const cost = cardIdx + 1;
+                                            const cost = card.energy_cost || card.energyCost || 0;
                                             const isAffordable = myTeam[selectedJablixIdx].energy >= cost;
 
                                             return (
                                                 <div
                                                     key={cardIdx}
-                                                    onClick={() => isAffordable && handleSelectCard(selectedJablixIdx, cardIdx)}
+                                                    onClick={() => isAffordable && !hasSubmitted && handleSelectCard(selectedJablixIdx, cardIdx)}
                                                     className={`p-3 rounded border cursor-pointer flex items-center gap-3 transition-colors ${isSelected
-                                                            ? 'bg-blue-900/40 border-blue-500'
-                                                            : isAffordable && !hasSubmitted
-                                                                ? 'bg-slate-800 border-slate-700 hover:bg-slate-700'
-                                                                : 'opacity-50 cursor-not-allowed border-slate-800'
+                                                        ? 'bg-blue-900/40 border-blue-500 ring-1 ring-blue-500/50'
+                                                        : isAffordable && !hasSubmitted
+                                                            ? 'bg-slate-800 border-slate-700 hover:bg-slate-700'
+                                                            : 'opacity-50 cursor-not-allowed border-slate-800 bg-slate-900'
                                                         }`}
                                                 >
-                                                    <div className="w-8 h-8 bg-slate-950 rounded flex items-center justify-center font-bold text-slate-400 text-sm">
+                                                    <div className={`w-8 h-8 rounded flex items-center justify-center font-bold text-xs ${isAffordable ? 'bg-yellow-500/20 text-yellow-500' : 'bg-slate-800 text-slate-500'}`}>
                                                         {cost}
                                                     </div>
-                                                    <div>
-                                                        <p className="font-bold text-xs text-white">Basic Attack</p>
-                                                        <p className="text-[10px] text-slate-500">Deals damage</p>
+                                                    <div className="flex-1 min-w-0">
+                                                        <p className="font-bold text-[11px] text-white truncate">{card.name}</p>
+                                                        <p className="text-[9px] text-slate-500 truncate leading-tight">{card.effect_text || card.description || 'Deals damage'}</p>
                                                     </div>
-                                                    {isSelected && <CheckCircle2 className="w-4 h-4 text-blue-400 self-center" />}
+                                                    {isSelected && <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" />}
                                                 </div>
                                             );
                                         })}
+                                        {(!myTeam[selectedJablixIdx].cards || myTeam[selectedJablixIdx].cards.length === 0) && (
+                                            <p className="text-xs text-slate-500 text-center py-4">No cards available</p>
+                                        )}
                                     </>
                                 ) : (
                                     <p className="text-xs text-slate-500 text-center py-4">Select a Jablix</p>

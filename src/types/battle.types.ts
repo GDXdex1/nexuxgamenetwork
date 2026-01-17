@@ -27,16 +27,21 @@ export interface PlayerBattleState {
 }
 
 export interface JablixBattleStats {
+  id?: string;
   jablixId: string;
   name: string;
-  element: string;
+  element?: string;
+  elements?: string[];
   hp: number;
+  max_hp?: number;
   maxHp: number;
   energy: number;
+  max_energy?: number;
   maxEnergy: number;
   attack: number;
   defense: number;
   speed: number;
+  cards?: any[];
   status_effects: StatusEffect[];
   is_alive: boolean;
 }
