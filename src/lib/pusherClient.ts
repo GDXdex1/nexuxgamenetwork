@@ -1,7 +1,7 @@
 import Pusher from 'pusher-js';
 
 // Initialize Pusher Client
-export const pusherClient = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY || '81923232bb82a2099309', {
+export const pusherClient = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY || 'cad7f998bc618adc2cbf', {
     cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER || 'us2',
     forceTLS: true,
 });

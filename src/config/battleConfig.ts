@@ -13,8 +13,8 @@ import { BATTLE_SERVER } from './suiConfig';
 // Battles run in memory via Next.js API routes
 // On-chain smart contract integration available but not yet implemented
 export const BATTLE_CONFIG = {
-  // API endpoint for the battle gateway (VPS)
-  API_URL: 'http://35.225.225.158:3000',
+  // API endpoint for the battle gateway (VPS) - Proxied via Next.js to avoid Mixed Content
+  API_URL: '/api/proxy',
 
   // Battle timeout settings
   TURN_TIMEOUT: 20000, // 20 seconds per turn
