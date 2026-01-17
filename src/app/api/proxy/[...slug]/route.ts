@@ -4,14 +4,15 @@ const VPS_GATEWAY_URL = 'http://35.225.225.158:3000';
 
 export async function POST(
     request: NextRequest,
-    { params }: { params: { slug: string[] } }
+    { params }: { params: Promise<{ slug: string[] }> }
 ) {
-    const slug = params.slug.join('/');
-    const targetUrl = `${VPS_GATEWAY_URL}/${slug}`;
-
-    console.log(`[PROXY] POST Forwarding to: ${targetUrl}`);
-
     try {
+        const { slug: slugArray } = await params;
+        const slug = slugArray.join('/');
+        const targetUrl = `${VPS_GATEWAY_URL}/${slug}`;
+
+        console.log(`[PROXY] POST Forwarding to: ${targetUrl}`);
+
         const body = await request.json();
 
         const response = await fetch(targetUrl, {
@@ -38,14 +39,15 @@ export async function POST(
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { slug: string[] } }
+    { params }: { params: Promise<{ slug: string[] }> }
 ) {
-    const slug = params.slug.join('/');
-    const targetUrl = `${VPS_GATEWAY_URL}/${slug}`;
-
-    console.log(`[PROXY] GET Forwarding to: ${targetUrl}`);
-
     try {
+        const { slug: slugArray } = await params;
+        const slug = slugArray.join('/');
+        const targetUrl = `${VPS_GATEWAY_URL}/${slug}`;
+
+        console.log(`[PROXY] GET Forwarding to: ${targetUrl}`);
+
         const response = await fetch(targetUrl);
         const data = await response.json();
         return NextResponse.json(data, { status: response.status });
