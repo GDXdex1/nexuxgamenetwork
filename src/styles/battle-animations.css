@@ -1,0 +1,378 @@
+/* Battle Animations - Estilo Axie Infinity */
+
+/* ===== ANIMACIONES DE SPRITES ===== */
+@keyframes jablixIdle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes jablixAttack {
+  0% {
+    transform: translateX(0) scale(1);
+  }
+  30% {
+    transform: translateX(20px) scale(1.1);
+  }
+  60% {
+    transform: translateX(-10px) scale(1.05);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes jablixDamage {
+  0%, 100% {
+    transform: translateX(0);
+    filter: brightness(1);
+  }
+  25% {
+    transform: translateX(-15px);
+    filter: brightness(1.5) hue-rotate(-30deg);
+  }
+  50% {
+    transform: translateX(15px);
+    filter: brightness(1.5) hue-rotate(30deg);
+  }
+  75% {
+    transform: translateX(-8px);
+    filter: brightness(1.2);
+  }
+}
+
+@keyframes jablixHeal {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.1);
+    filter: brightness(1.4) hue-rotate(90deg);
+  }
+}
+
+@keyframes jablixShield {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes jablixBuff {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.12) rotate(5deg);
+    filter: brightness(1.3) saturate(1.5);
+  }
+}
+
+@keyframes jablixDebuff {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(0.92);
+    filter: brightness(0.7) saturate(0.5);
+  }
+}
+
+@keyframes jablixDeath {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2) rotate(10deg);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(0) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+/* ===== CLASES APLICABLES ===== */
+.jablix-idle {
+  animation: jablixIdle 2s ease-in-out infinite;
+}
+
+.jablix-attack {
+  animation: jablixAttack 0.6s ease-in-out;
+}
+
+.jablix-damage {
+  animation: jablixDamage 0.5s ease-in-out;
+}
+
+.jablix-heal {
+  animation: jablixHeal 0.7s ease-in-out;
+}
+
+.jablix-shield {
+  animation: jablixShield 0.5s ease-in-out;
+}
+
+.jablix-buff {
+  animation: jablixBuff 0.8s ease-in-out;
+}
+
+.jablix-debuff {
+  animation: jablixDebuff 0.7s ease-in-out;
+}
+
+.jablix-death {
+  animation: jablixDeath 1.2s ease-out forwards;
+}
+
+/* ===== DAMAGE NUMBERS ===== */
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-30px) scale(1.3);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-60px) scale(1);
+    opacity: 0;
+  }
+}
+
+.damage-number {
+  animation: floatUp 1.5s ease-out forwards;
+  font-weight: 900;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* ===== HP BAR ANIMATIONS ===== */
+@keyframes hpDecrease {
+  0% {
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(0.95);
+  }
+  100% {
+    transform: scaleX(var(--target-scale));
+  }
+}
+
+@keyframes hpIncrease {
+  0% {
+    transform: scaleX(var(--start-scale));
+  }
+  100% {
+    transform: scaleX(var(--target-scale));
+  }
+}
+
+.hp-bar-transition {
+  transition: width 0.5s ease-out;
+}
+
+/* ===== ENERGY BAR GLOW ===== */
+@keyframes energyGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
+  }
+}
+
+.energy-bar {
+  animation: energyGlow 2s ease-in-out infinite;
+}
+
+/* ===== CARD HOVER & SELECT ===== */
+@keyframes cardHover {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.05);
+  }
+}
+
+.card-hover:hover {
+  animation: cardHover 0.3s ease-in-out forwards;
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.6);
+}
+
+.card-selected {
+  transform: translateY(-10px) scale(1.1);
+  box-shadow: 0 15px 40px rgba(139, 92, 246, 0.8);
+  border: 3px solid #a78bfa;
+}
+
+/* ===== TURN INDICATOR ===== */
+@keyframes turnPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+}
+
+.turn-indicator {
+  animation: turnPulse 1s ease-in-out infinite;
+}
+
+/* ===== STATUS EFFECT ICONS ===== */
+@keyframes statusBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.status-effect {
+  animation: statusBounce 1s ease-in-out infinite;
+}
+
+/* ===== SHIELD EFFECT ===== */
+@keyframes shieldShimmer {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+.shield-active {
+  animation: shieldShimmer 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.8));
+}
+
+/* ===== VICTORY/DEFEAT BANNER ===== */
+@keyframes bannerSlideIn {
+  0% {
+    transform: translateY(-100px) scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(10px) scale(1.1);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.victory-banner {
+  animation: bannerSlideIn 0.8s ease-out forwards;
+}
+
+/* ===== ELEMENTAL EFFECTS ===== */
+@keyframes fireEffect {
+  0%, 100% {
+    filter: hue-rotate(0deg) brightness(1);
+  }
+  50% {
+    filter: hue-rotate(15deg) brightness(1.2);
+  }
+}
+
+@keyframes waterEffect {
+  0%, 100% {
+    filter: hue-rotate(0deg) saturate(1);
+  }
+  50% {
+    filter: hue-rotate(180deg) saturate(1.5);
+  }
+}
+
+@keyframes earthEffect {
+  0%, 100% {
+    filter: sepia(0);
+  }
+  50% {
+    filter: sepia(0.3);
+  }
+}
+
+@keyframes lightEffect {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.5);
+  }
+}
+
+@keyframes darkEffect {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(0.6);
+  }
+}
+
+.fire-element {
+  animation: fireEffect 1s ease-in-out infinite;
+}
+
+.water-element {
+  animation: waterEffect 2s ease-in-out infinite;
+}
+
+.earth-element {
+  animation: earthEffect 1.5s ease-in-out infinite;
+}
+
+.light-element {
+  animation: lightEffect 1.2s ease-in-out infinite;
+}
+
+.dark-element {
+  animation: darkEffect 1.3s ease-in-out infinite;
+}
+
+/* ===== BATTLE LOG SCROLL ===== */
+@keyframes logScroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.battle-log-scroll {
+  animation: logScroll 10s linear infinite;
+}
+
+/* ===== BACKGROUND PULSE ===== */
+@keyframes bgPulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.bg-pulse {
+  animation: bgPulse 3s ease-in-out infinite;
+}

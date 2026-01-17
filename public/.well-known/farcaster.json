@@ -1,0 +1,25 @@
+{
+  "miniapp": {
+    "version": "1",
+    "name": "BattleRefactor Pro",
+    "iconUrl": "https://usdozf7pplhxfvrl.public.blob.vercel-storage.com/thumbnail_bee995f1-fe83-45c6-abaf-4affaca7db63-ZbvE4HeZd57sH46VYhKTkDCu9sdYbJ",
+    "homeUrl": "https://box-line-693.app.ohara.ai",
+    "imageUrl": "https://usdozf7pplhxfvrl.public.blob.vercel-storage.com/thumbnail_bee995f1-fe83-45c6-abaf-4affaca7db63-ZbvE4HeZd57sH46VYhKTkDCu9sdYbJ",
+    "buttonTitle": "Open with Ohara",
+    "splashImageUrl": "https://usdozf7pplhxfvrl.public.blob.vercel-storage.com/farcaster/splash_images/splash_image1.svg",
+    "splashBackgroundColor": "#ffffff",
+    "tags": [
+      "ohara",
+      "mini-app",
+      "base",
+      "farcaster"
+    ],
+    "primaryCategory": "entertainment",
+    "ogTitle": "BattleRefactor Pro",
+    "ogImageUrl": "https://usdozf7pplhxfvrl.public.blob.vercel-storage.com/thumbnail_bee995f1-fe83-45c6-abaf-4affaca7db63-ZbvE4HeZd57sH46VYhKTkDCu9sdYbJ",
+    "screenshotUrls": []
+  },
+  "baseBuilder": {
+    "ownerAddress": ""
+  }
+}
