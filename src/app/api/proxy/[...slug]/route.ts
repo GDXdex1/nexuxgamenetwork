@@ -4,10 +4,13 @@ const VPS_GATEWAY_URL = 'http://35.225.225.158:3000';
 
 export async function POST(
     request: NextRequest,
-    { params }: { params: Promise<{ slug: string[] }> }
+    // Use any for the second argument to bypass persistent Next.js 15 build errors 
+    // while ensuring we can still await params if they are a Promise.
+    context: any
 ) {
     try {
-        const { slug: slugArray } = await params;
+        const params = await context.params;
+        const slugArray = params.slug as string[];
         const slug = slugArray.join('/');
         const targetUrl = `${VPS_GATEWAY_URL}/${slug}`;
 
@@ -39,10 +42,11 @@ export async function POST(
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: Promise<{ slug: string[] }> }
+    context: any
 ) {
     try {
-        const { slug: slugArray } = await params;
+        const params = await context.params;
+        const slugArray = params.slug as string[];
         const slug = slugArray.join('/');
         const targetUrl = `${VPS_GATEWAY_URL}/${slug}`;
 
