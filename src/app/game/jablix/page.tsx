@@ -21,6 +21,20 @@ import { useIsInFarcaster } from "@/hooks/useIsInFarcaster";
 import { useJxcBalance, useSuiBalance, useUserJabs } from '@/hooks/useSuiData';
 import { jxcFromSmallestUnit } from '@/config/suiConfig';
 import { useRouter } from 'next/navigation';
+import {
+  Zap,
+  Sword,
+  ShoppingBag,
+  MessageSquare,
+  Book,
+  Sparkles,
+  Wallet as WalletIcon,
+  Settings,
+  ArrowLeft,
+  Shield,
+  Coins,
+  LayoutDashboard
+} from 'lucide-react';
 
 type GameState = 'main' | 'modeSelect' | 'matchmaking' | 'gym' | 'genesis' | 'marketplace' | 'battle' | 'forum' | 'wallet' | 'admin' | 'book' | 'evolution';
 
@@ -33,22 +47,22 @@ export default function JablixArena() {
   const [gameState, setGameState] = useState<GameState>('main');
   const [currentMatch, setCurrentMatch] = useState<MatchData | null>(null);
   const [selectedMode, setSelectedMode] = useState<BattleMode | null>(null);
-  
+
   // Get user balances
   const jxcBalanceQuery = useJxcBalance();
   const suiBalanceQuery = useSuiBalance();
   const jabsQuery = useUserJabs();
-  
-  const jxcBalance = jxcBalanceQuery.data?.totalBalance 
-    ? jxcFromSmallestUnit(jxcBalanceQuery.data.totalBalance) 
+
+  const jxcBalance = jxcBalanceQuery.data?.totalBalance
+    ? jxcFromSmallestUnit(jxcBalanceQuery.data.totalBalance)
     : 0;
-    
-  const suiBalance = suiBalanceQuery.data?.totalBalance 
-    ? Number(suiBalanceQuery.data.totalBalance) / 1_000_000_000 
+
+  const suiBalance = suiBalanceQuery.data?.totalBalance
+    ? Number(suiBalanceQuery.data.totalBalance) / 1_000_000_000
     : 0;
-    
+
   const jablixCount = jabsQuery.data?.length || 0;
-  
+
   useQuickAuth(isInFarcaster);
 
   useEffect(() => {
@@ -67,7 +81,7 @@ export default function JablixArena() {
     const initializeFarcaster = async () => {
       try {
         await new Promise(resolve => setTimeout(resolve, 100));
-        
+
         if (document.readyState !== 'complete') {
           await new Promise<void>(resolve => {
             if (document.readyState === 'complete') {
@@ -82,7 +96,7 @@ export default function JablixArena() {
         console.log('Farcaster SDK initialized successfully - app fully loaded');
       } catch (error) {
         console.error('Failed to initialize Farcaster SDK:', error);
-        
+
         setTimeout(async () => {
           try {
             await sdk.actions.ready();
@@ -125,263 +139,253 @@ export default function JablixArena() {
   // Main Menu
   if (gameState === 'main') {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 relative overflow-hidden">
-        {/* Enhanced Banner at Top */}
-        <div className="relative z-10 w-full">
-          <div className="absolute inset-0 bg-gradient-to-b from-purple-600/30 to-transparent blur-3xl" />
-          <img 
-            src="https://usdozf7pplhxfvrl.public.blob.vercel-storage.com/29973595-1e22-47bd-ac6d-ee040ee06efa-7GPiFWVzCQ093tX2AJdbk337pDSHA7" 
+      <main className="min-h-screen bg-[#010101] text-white relative overflow-hidden font-sans">
+        {/* Background Tech Layer */}
+        <div className="absolute inset-0 tech-bg-grid opacity-20 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-primary/5 pointer-events-none" />
+
+        {/* Top Decorative Line */}
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent z-20" />
+
+        {/* Hero Section / Banner */}
+        <div className="relative h-[25vh] md:h-[35vh] overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-t from-[#010101] via-transparent to-transparent z-10" />
+          <img
+            src="https://usdozf7pplhxfvrl.public.blob.vercel-storage.com/29973595-1e22-47bd-ac6d-ee040ee06efa-7GPiFWVzCQ093tX2AJdbk337pDSHA7"
             alt="Jablix Arena"
-            className="w-full h-56 md:h-72 lg:h-96 object-cover border-b-4 border-purple-500 shadow-2xl relative"
-            style={{
-              filter: 'brightness(1.1) contrast(1.2) saturate(1.3)',
-            }}
+            className="w-full h-full object-cover grayscale opacity-40"
           />
-        </div>
-
-        {/* Animated Background */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute w-[600px] h-[600px] bg-purple-500/30 rounded-full blur-3xl animate-pulse top-20 -left-40" />
-          <div className="absolute w-[600px] h-[600px] bg-indigo-500/30 rounded-full blur-3xl animate-pulse bottom-20 -right-40" style={{ animationDelay: '2s' }} />
-          <div className="absolute w-[500px] h-[500px] bg-pink-500/20 rounded-full blur-3xl animate-pulse top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" style={{ animationDelay: '4s' }} />
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 flex flex-col items-center justify-center p-8 py-16">
-          {/* Title */}
-          <div className="text-center mb-6">
-            <h1 className="text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-300 to-indigo-300 drop-shadow-2xl mb-6 animate-pulse"
-              style={{
-                textShadow: '0 0 80px rgba(168, 85, 247, 0.8), 0 0 120px rgba(168, 85, 247, 0.4)',
-                letterSpacing: '0.05em'
-              }}>
-              JABLIX ARENA
+          <div className="absolute inset-0 flex flex-col items-center justify-center z-20 px-4 mt-8">
+            <div className="flex items-center gap-4 mb-2">
+              <div className="w-12 h-[2px] bg-primary animate-pulse" />
+              <h2 className="text-[10px] font-black tracking-[0.4em] text-primary uppercase">Tactical_Combat_System</h2>
+              <div className="w-12 h-[2px] bg-primary animate-pulse" />
+            </div>
+            <h1 className="text-5xl md:text-8xl font-black italic tracking-tighter text-white uppercase font-heading drop-shadow-[0_0_30px_rgba(255,107,0,0.2)]">
+              JABLIX <span className="text-primary neon-text-orange">ARENA</span>
             </h1>
-            <p className="text-2xl md:text-3xl text-purple-100 font-bold mb-4 text-center max-w-3xl drop-shadow-lg">
-              ⚔️ Epic 3v3 NFT Card Battles on Sui Blockchain ⚔️
-            </p>
-            <p className="text-lg md:text-xl text-purple-300 font-semibold text-center max-w-2xl">
-              Battle • Mint • Trade • Dominate the Arena!
-            </p>
+          </div>
+        </div>
+
+        {/* Global HUD Content */}
+        <div className="relative z-20 container mx-auto px-4 -mt-12 pb-24">
+
+          {/* Top HUD Bar */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {/* Wallet Info Tile */}
+            <div className="md:col-span-2 bg-black/60 border border-primary/20 p-4 rounded-tr-3xl backdrop-blur-md flex flex-wrap items-center justify-between gap-6">
+              {account ? (
+                <>
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded bg-primary/10 border border-primary/30 flex items-center justify-center">
+                      <WalletIcon className="w-6 h-6 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-[8px] font-black text-primary/60 uppercase tracking-widest">Operator_Connected</p>
+                      <p className="text-sm font-mono font-bold text-white">{account.address.slice(0, 8)}...{account.address.slice(-6)}</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-8">
+                    <div className="text-center md:text-left">
+                      <p className="text-[8px] font-black text-primary/40 uppercase tracking-widest flex items-center gap-1 justify-center md:justify-start">
+                        <Coins className="w-2 h-2" /> Assets_JXC
+                      </p>
+                      <p className="text-xl font-black text-white">{jxcBalance.toLocaleString()}</p>
+                    </div>
+                    <div className="text-center md:text-left">
+                      <p className="text-[8px] font-black text-blue-400/40 uppercase tracking-widest flex items-center gap-1 justify-center md:justify-start">
+                        <Zap className="w-2 h-2" /> Native_SUI
+                      </p>
+                      <p className="text-xl font-black text-white">{suiBalance.toFixed(3)}</p>
+                    </div>
+                    <div className="text-center md:text-left">
+                      <p className="text-[8px] font-black text-green-400/40 uppercase tracking-widest">Units_Active</p>
+                      <p className="text-xl font-black text-white">{jablixCount}</p>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="w-full flex items-center justify-between">
+                  <p className="text-xs font-black text-white/40 uppercase tracking-widest">Critical: Auth_Required_To_Proceed</p>
+                  <ConnectButton />
+                </div>
+              )}
+            </div>
+
+            {/* Quick Actions / Status */}
+            <div className="bg-black/40 border border-white/5 p-4 flex flex-col justify-center gap-2">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-black text-white/40 uppercase">System_Status</span>
+                <span className="flex items-center gap-1.5 text-[10px] font-black text-green-500 uppercase">
+                  <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" /> Online
+                </span>
+              </div>
+              <div className="h-[2px] bg-white/5 w-full" />
+              <p className="text-[9px] font-mono text-white/30 leading-tight">
+                NEXT_GEN_BATTLE_STATION // DRARIUX_NETWORK_CORE
+              </p>
+            </div>
           </div>
 
-          {/* Wallet Connection Status */}
-          {account ? (
-            <div className="mb-8 p-6 bg-gradient-to-r from-cyan-900/50 to-blue-900/50 backdrop-blur-lg rounded-2xl border-2 border-cyan-400/30 shadow-2xl">
-              <div className="flex flex-col gap-3 items-center">
-                <p className="text-cyan-100 font-bold text-lg">
-                  Connected: {account.address.slice(0, 6)}...{account.address.slice(-4)}
-                </p>
-                <div className="flex gap-6 text-center">
-                  <div>
-                    <p className="text-cyan-300 text-sm">JXC Balance</p>
-                    <p className="text-white font-bold text-xl">{jxcBalance.toLocaleString()}</p>
-                  </div>
-                  <div>
-                    <p className="text-cyan-300 text-sm">SUI Balance</p>
-                    <p className="text-white font-bold text-xl">{suiBalance.toFixed(4)}</p>
-                  </div>
-                  <div>
-                    <p className="text-cyan-300 text-sm">Jabs</p>
-                    <p className="text-white font-bold text-xl">{jablixCount}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="mb-8">
-              <ConnectButton />
-            </div>
-          )}
-
-          {/* Menu Buttons */}
-          <div className="flex flex-col gap-6 w-full max-w-xl mt-8">
+          {/* Navigational Matrix / Grid Menu */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* 1. BATTLE MODE */}
             <button
               onClick={() => setGameState('modeSelect')}
               disabled={!account}
-              className="group relative bg-gradient-to-r from-green-600 via-emerald-600 to-green-600 hover:from-green-500 hover:via-emerald-500 hover:to-green-500
-                       text-white font-black py-7 px-12 rounded-2xl text-2xl
-                       transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-green-500/60
-                       border-4 border-green-400 overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative h-48 bg-black border border-primary/30 rounded-br-3xl overflow-hidden transition-all duration-500 hover:border-primary hover:shadow-[0_0_30px_rgba(255,107,0,0.15)] disabled:opacity-40"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-              
-              <span className="flex items-center justify-center gap-3 relative z-10">
-                <span className="text-3xl">⚔️</span>
-                <span>BATTLE MODE</span>
-                <span className="text-3xl">⚔️</span>
-              </span>
-              <p className="text-sm font-semibold mt-2 opacity-90 relative z-10">
-                {account ? 'Random • AI • Gym' : 'Connect wallet to play'}
-              </p>
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute -right-4 -bottom-4 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors" />
+
+              <div className="absolute top-4 left-4 p-3 bg-primary text-black rounded skew-x-[-12deg]">
+                <Sword className="w-6 h-6 skew-x-[12deg]" />
+              </div>
+
+              <div className="absolute bottom-4 left-4 text-left">
+                <h3 className="text-2xl font-black italic text-white uppercase group-hover:text-primary transition-colors">Combat_Zone</h3>
+                <p className="text-[9px] font-black text-white/40 uppercase tracking-widest mt-1">Multiplayer / AI Arena</p>
+              </div>
+
+              {/* Animated Corner */}
+              <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center overflow-hidden">
+                <div className="absolute w-12 h-[1px] bg-primary/40 rotate-45 translate-x-3 -translate-y-3" />
+              </div>
             </button>
 
+            {/* 2. JABLIX GENESIS */}
             <button
               onClick={() => setGameState('genesis')}
               disabled={!account}
-              className="group relative bg-gradient-to-r from-pink-600 via-purple-600 to-pink-600 hover:from-pink-500 hover:via-purple-500 hover:to-pink-500
-                       text-white font-black py-7 px-12 rounded-2xl text-2xl
-                       transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-pink-500/60
-                       border-4 border-pink-400 overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative h-48 bg-black border border-white/10 overflow-hidden transition-all duration-500 hover:border-pink-500 hover:shadow-[0_0_30px_rgba(236,72,153,0.15)] disabled:opacity-40"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-              
-              <span className="flex items-center justify-center gap-3 relative z-10">
-                <span className="text-3xl">✨</span>
-                <span>JABLIX GENESIS</span>
-                <span className="text-3xl">🎨</span>
-              </span>
-              <p className="text-sm font-semibold mt-2 opacity-90 relative z-10">
-                {account ? 'Mint powerful Jabs' : 'Connect wallet to mint'}
-              </p>
+              <div className="absolute top-4 left-4 p-3 bg-pink-600/20 text-pink-500 border border-pink-500/30 rounded">
+                <Sparkles className="w-6 h-6 outline-none" />
+              </div>
+              <div className="absolute bottom-4 left-4 text-left">
+                <h3 className="text-2xl font-black italic text-white uppercase group-hover:text-pink-500 transition-colors">Genesis_Module</h3>
+                <p className="text-[9px] font-black text-white/40 uppercase tracking-widest mt-1">Mint / Fabricate Units</p>
+              </div>
+              <div className="absolute inset-0 bg-tech-scan opacity-0 group-hover:opacity-10 transition-opacity pointer-events-none" />
             </button>
 
+            {/* 3. MARKETPLACE */}
             <button
               onClick={() => setGameState('marketplace')}
               disabled={!account}
-              className="group relative bg-gradient-to-r from-yellow-600 via-amber-600 to-yellow-600 hover:from-yellow-500 hover:via-amber-500 hover:to-yellow-500
-                       text-white font-black py-7 px-12 rounded-2xl text-2xl
-                       transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-yellow-500/60
-                       border-4 border-yellow-400 overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative h-48 bg-black border border-white/10 overflow-hidden transition-all duration-500 hover:border-yellow-500 hover:shadow-[0_0_30px_rgba(234,179,8,0.15)] disabled:opacity-40"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-              
-              <span className="flex items-center justify-center gap-3 relative z-10">
-                <span className="text-3xl">🛒</span>
-                <span>MARKETPLACE</span>
-                <span className="text-3xl">💰</span>
-              </span>
-              <p className="text-sm font-semibold mt-2 opacity-90 relative z-10">
-                {account ? 'Trade Jablix NFTs' : 'Connect wallet to trade'}
-              </p>
+              <div className="absolute top-4 left-4 p-3 bg-yellow-600/20 text-yellow-500 border border-yellow-500/30 rounded">
+                <ShoppingBag className="w-6 h-6" />
+              </div>
+              <div className="absolute bottom-4 left-4 text-left">
+                <h3 className="text-2xl font-black italic text-white uppercase group-hover:text-yellow-500 transition-colors">Market_Link</h3>
+                <p className="text-[9px] font-black text-white/40 uppercase tracking-widest mt-1">Trade / Exchange Assets</p>
+              </div>
             </button>
 
-            <button
-              onClick={() => setGameState('forum')}
-              disabled={!account}
-              className="group relative bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 hover:from-indigo-500 hover:via-blue-500 hover:to-indigo-500
-                       text-white font-black py-7 px-12 rounded-2xl text-2xl
-                       transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-indigo-500/60
-                       border-4 border-indigo-400 overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-              
-              <span className="flex items-center justify-center gap-3 relative z-10">
-                <span className="text-3xl">💬</span>
-                <span>COMMUNITY FORUM</span>
-                <span className="text-3xl">🌐</span>
-              </span>
-              <p className="text-sm font-semibold mt-2 opacity-90 relative z-10">
-                {account ? 'Connect with players' : 'Connect wallet to join'}
-              </p>
-            </button>
-
-            <button
-              onClick={() => setGameState('book')}
-              disabled={!account}
-              className="group relative bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:via-indigo-500 hover:to-purple-500
-                       text-white font-black py-7 px-12 rounded-2xl text-2xl
-                       transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-blue-500/60
-                       border-4 border-blue-400 overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-              
-              <span className="flex items-center justify-center gap-3 relative z-10">
-                <span className="text-3xl">📖</span>
-                <span>JABLIX BOOK</span>
-                <span className="text-3xl">🔖</span>
-              </span>
-              <p className="text-sm font-semibold mt-2 opacity-90 relative z-10">
-                {account ? 'View all Jabs' : 'Connect wallet to view'}
-              </p>
-            </button>
-
-            <button
-              onClick={() => setGameState('evolution')}
-              disabled={!account}
-              className="group relative bg-gradient-to-r from-violet-600 via-fuchsia-600 to-violet-600 hover:from-violet-500 hover:via-fuchsia-500 hover:to-violet-500
-                       text-white font-black py-7 px-12 rounded-2xl text-2xl
-                       transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-violet-500/60
-                       border-4 border-violet-400 overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-              
-              <span className="flex items-center justify-center gap-3 relative z-10">
-                <span className="text-3xl">✨</span>
-                <span>JABLIX EVOLUTION</span>
-                <span className="text-3xl">🔮</span>
-              </span>
-              <p className="text-sm font-semibold mt-2 opacity-90 relative z-10">
-                {account ? 'Evolve your Jabs' : 'Connect wallet to evolve'}
-              </p>
-            </button>
-
+            {/* 4. MY WALLET */}
             <button
               onClick={() => setGameState('wallet')}
               disabled={!account}
-              className="group relative bg-gradient-to-r from-cyan-600 via-teal-600 to-cyan-600 hover:from-cyan-500 hover:via-teal-500 hover:to-cyan-500
-                       text-white font-black py-7 px-12 rounded-2xl text-2xl
-                       transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-cyan-500/60
-                       border-4 border-cyan-400 overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative h-48 bg-black border border-white/10 rounded-bl-3xl overflow-hidden transition-all duration-500 hover:border-cyan-500 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] disabled:opacity-40"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-              
-              <span className="flex items-center justify-center gap-3 relative z-10">
-                <span className="text-3xl">💼</span>
-                <span>MY WALLET</span>
-                <span className="text-3xl">💎</span>
-              </span>
-              <p className="text-sm font-semibold mt-2 opacity-90 relative z-10">
-                {account ? 'View your collection' : 'Connect wallet to view'}
-              </p>
+              <div className="absolute top-4 left-4 p-3 bg-cyan-600/20 text-cyan-500 border border-cyan-500/30 rounded">
+                <LayoutDashboard className="w-6 h-6" />
+              </div>
+              <div className="absolute bottom-4 left-4 text-left">
+                <h3 className="text-2xl font-black italic text-white uppercase group-hover:text-cyan-500 transition-colors">Armory_Vault</h3>
+                <p className="text-[9px] font-black text-white/40 uppercase tracking-widest mt-1">Units / Stats / Inventory</p>
+              </div>
             </button>
 
-            {account && (account.address === '0x554a2392980b0c3e4111c9a0e8897e632d41847d04cbd41f9e081e49ba2eb04a' || account.address === '0x9e7aaf5f56ae094eadf9ca7f2856f533bcbf12fcc9bb9578e43ca770599a5dce') && (
-              <button
-                onClick={() => setGameState('admin')}
-                className="group relative bg-gradient-to-r from-red-600 via-orange-600 to-red-600 hover:from-red-500 hover:via-orange-500 hover:to-red-500
-                         text-white font-black py-7 px-12 rounded-2xl text-2xl
-                         transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-red-500/60
-                         border-4 border-red-400 overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-                
-                <span className="flex items-center justify-center gap-3 relative z-10">
-                  <span className="text-3xl">⚙️</span>
-                  <span>ADMIN PANEL</span>
-                  <span className="text-3xl">🔐</span>
-                </span>
-                <p className="text-sm font-semibold mt-2 opacity-90 relative z-10">
-                  Admin controls
-                </p>
-              </button>
-            )}
-
-            {/* Back to Drariux Game */}
+            {/* 5. COMMUNITY FORUM */}
             <button
-              onClick={() => router.push('/game')}
-              className="group relative bg-gradient-to-r from-gray-600 via-slate-600 to-gray-600 hover:from-gray-500 hover:via-slate-500 hover:to-gray-500
-                       text-white font-black py-5 px-12 rounded-2xl text-xl
-                       transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-gray-500/60
-                       border-4 border-gray-400 overflow-hidden"
+              onClick={() => setGameState('forum')}
+              disabled={!account}
+              className="group relative h-40 bg-black/40 border border-white/5 overflow-hidden transition-all hover:bg-black/60 hover:border-white/20"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-              
-              <span className="flex items-center justify-center gap-3 relative z-10">
-                <span className="text-2xl">←</span>
-                <span>BACK TO DRARIUX GAME</span>
-              </span>
+              <div className="flex items-center gap-4 p-6">
+                <div className="p-3 bg-white/5 text-white/40 rounded border border-white/10 group-hover:text-white transition-colors">
+                  <MessageSquare className="w-5 h-5" />
+                </div>
+                <div className="text-left">
+                  <h4 className="text-sm font-black text-white uppercase tracking-tight">Comm_Link</h4>
+                  <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">Global Forum</p>
+                </div>
+              </div>
             </button>
+
+            {/* 6. JABLIX BOOK */}
+            <button
+              onClick={() => setGameState('book')}
+              disabled={!account}
+              className="group relative h-40 bg-black/40 border border-white/5 overflow-hidden transition-all hover:bg-black/60 hover:border-white/20"
+            >
+              <div className="flex items-center gap-4 p-6">
+                <div className="p-3 bg-white/5 text-white/40 rounded border border-white/10 group-hover:text-white transition-colors">
+                  <Book className="w-5 h-5" />
+                </div>
+                <div className="text-left">
+                  <h4 className="text-sm font-black text-white uppercase tracking-tight">Archives</h4>
+                  <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">Unit Databank</p>
+                </div>
+              </div>
+            </button>
+
+            {/* 7. JABLIX EVOLUTION */}
+            <button
+              onClick={() => setGameState('evolution')}
+              disabled={!account}
+              className="group relative h-40 bg-black/40 border border-white/5 overflow-hidden transition-all hover:bg-black/60 hover:border-white/20"
+            >
+              <div className="flex items-center gap-4 p-6">
+                <div className="p-3 bg-white/5 text-white/40 rounded border border-white/10 group-hover:text-white transition-colors">
+                  <Zap className="w-5 h-5" />
+                </div>
+                <div className="text-left">
+                  <h4 className="text-sm font-black text-white uppercase tracking-tight">Evolution</h4>
+                  <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">Mutation_Lab</p>
+                </div>
+              </div>
+            </button>
+
+            {/* 8. ADMIN / BACK LINK */}
+            <div className="grid grid-cols-1 gap-2">
+              {account && (account.address === '0x554a2392980b0c3e4111c9a0e8897e632d41847d04cbd41f9e081e49ba2eb04a' || account.address === '0x9e7aaf5f56ae094eadf9ca7f2856f533bcbf12fcc9bb9578e43ca770599a5dce') && (
+                <button
+                  onClick={() => setGameState('admin')}
+                  className="h-19 group bg-red-950/20 border border-red-500/20 hover:border-red-500 transition-all p-4 flex items-center gap-3"
+                >
+                  <Settings className="w-4 h-4 text-red-500" />
+                  <span className="text-[10px] font-black text-red-500 uppercase tracking-widest">Core_Settings</span>
+                </button>
+              )}
+              <button
+                onClick={() => router.push('/game')}
+                className="h-19 group bg-white/5 border border-white/10 hover:border-white/40 transition-all p-4 flex items-center gap-3"
+              >
+                <ArrowLeft className="w-4 h-4 text-white/40 group-hover:text-white transition-colors" />
+                <span className="text-[10px] font-black text-white/40 group-hover:text-white uppercase tracking-widest transition-colors">Return_To_Hub</span>
+              </button>
+            </div>
           </div>
 
-          {/* Footer Info */}
-          <div className="mt-12 text-center">
-            <p className="text-purple-200 text-sm opacity-80">
-              Powered by Sui Blockchain • Built with Next.js
-            </p>
-            <p className="text-purple-300 text-xs mt-2 opacity-60">
-              Contract: {`0x${process.env.NEXT_PUBLIC_PACKAGE_ID || '337ec3a90dc6b0768b63a15d40b53365e2f1cafe89475b01485309d6e6c61cb0'}`.slice(0, 10)}...
-            </p>
+          {/* Site Footer HUD */}
+          <div className="mt-16 border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-primary" />
+                <p className="text-[9px] font-black text-white/40 uppercase tracking-[0.2em]">SUI_ENCRYPTED_ASSETS</p>
+              </div>
+              <div className="w-[1px] h-4 bg-white/10 hidden md:block" />
+              <p className="text-[9px] font-mono text-white/20">V_0.8.2_BETA // JABLIX_PROTOCOL</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="px-3 py-1 bg-white/5 rounded-full border border-white/10 text-[8px] font-black text-white/30 uppercase tracking-widest">
+                PackageID: {`0x${process.env.NEXT_PUBLIC_PACKAGE_ID || '337ec3a90dc6b0768b63a15d40b53365e2f1cafe89475b01485309d6e6c61cb0'}`.slice(0, 10)}...
+              </div>
+            </div>
           </div>
         </div>
       </main>
@@ -391,7 +395,7 @@ export default function JablixArena() {
   // Battle Mode Selection
   if (gameState === 'modeSelect') {
     return (
-      <BattleModeSelector 
+      <BattleModeSelector
         onModeSelect={handleModeSelect}
         onBack={handleBackToMain}
       />

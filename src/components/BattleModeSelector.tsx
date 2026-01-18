@@ -27,168 +27,196 @@ export default function BattleModeSelector({ onModeSelect, onBack }: BattleModeS
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center p-4 relative overflow-hidden pt-16">
-      {/* Animated Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-      </div>
+    <div className="min-h-screen bg-[#010101] text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
+      {/* Background Tech Layer */}
+      <div className="absolute inset-0 tech-bg-grid opacity-20 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-primary/5 pointer-events-none" />
 
-      <div className="max-w-6xl w-full relative z-10">
-        {/* Back Button */}
-        <div className="absolute top-0 left-0">
-          <button
-            onClick={onBack}
-            className="transition-all transform hover:scale-110 active:scale-95"
-          >
-            <img 
-              src="https://usdozf7pplhxfvrl.public.blob.vercel-storage.com/56fa9ed2-8a4e-42ba-8746-d03370944e7d-k39OOt1uF85tIpdfal9oa1yj57AqgR"
-              alt="Back"
-              className="w-16 h-16 object-contain drop-shadow-2xl"
-            />
-          </button>
+      {/* Animated Pulses */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[120px] animate-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[120px] animate-pulse-glow" style={{ animationDelay: '2s' }} />
+
+      <div className="max-w-6xl w-full relative z-10 flex flex-col gap-8">
+
+        {/* Navigation & Header HUD */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-primary/20 pb-8">
+          <div className="flex items-center gap-6">
+            <button
+              onClick={onBack}
+              className="group relative p-4 bg-white/5 border border-white/10 hover:border-primary transition-all rounded-tr-xl flex items-center justify-center"
+            >
+              <ArrowLeft className="w-5 h-5 text-white/40 group-hover:text-primary transition-colors" />
+              <div className="absolute -top-[1px] -left-[1px] w-4 h-4 border-t border-l border-primary/40 opacity-0 group-hover:opacity-100" />
+            </button>
+            <div className="text-left">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-8 h-[1px] bg-primary/40" />
+                <span className="text-[10px] font-black tracking-[0.3em] text-primary/60 uppercase">Mission_Briefing</span>
+              </div>
+              <h1 className="text-4xl md:text-5xl font-black italic tracking-tighter uppercase font-heading">
+                SELECT <span className="text-primary neon-text-orange">PROTOCOL</span>
+              </h1>
+            </div>
+          </div>
+
+          {/* Status Info */}
+          <div className="hidden lg:flex items-center gap-6 px-6 py-3 bg-black/40 border border-white/5 rounded-bl-2xl">
+            <div className="text-right">
+              <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">Operation_Status</p>
+              <p className="text-[10px] font-black text-green-500 uppercase flex items-center gap-2 justify-end">
+                <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" /> Ready_To_Deploy
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Banner */}
-        <div className="text-center mb-8">
-          <img
-            src="https://usdozf7pplhxfvrl.public.blob.vercel-storage.com/4f3ded0e-dfc8-4203-a8b5-c5520107ed9b-4CHtf1hokrrrUpgGLZRmBEQ5pDYP3C"
-            alt="Jablix Arena"
-            className="w-full max-w-3xl mx-auto rounded-3xl shadow-2xl border-4 border-purple-500/50 mb-6"
-          />
-          <h1 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-300 to-indigo-300 mb-3">
-            SELECT BATTLE MODE
-          </h1>
-          <p className="text-xl text-purple-200 font-semibold">
-            Choose how you want to battle
-          </p>
-        </div>
-
-        {/* Wallet Connection Alert */}
+        {/* Wallet Warning */}
         {!account && (
-          <Alert className="mb-8 bg-red-900/50 border-red-500">
-            <AlertCircle className="h-5 w-5" />
-            <AlertDescription className="text-white font-semibold">
-              ⚠️ You need to connect your Sui wallet in Jablix Arena before selecting a battle mode
-            </AlertDescription>
-          </Alert>
+          <div className="bg-red-500/10 border border-red-500/30 p-4 flex items-center gap-4 animate-shake">
+            <AlertCircle className="w-6 h-6 text-red-500 shrink-0" />
+            <div className="text-left">
+              <p className="text-[10px] font-black text-red-500 uppercase tracking-widest">Unauthorized_Access_Detected</p>
+              <p className="text-xs text-white/60">Neural link required. Connect wallet in Arena terminal to initialize combat protocols.</p>
+            </div>
+          </div>
         )}
 
-        {/* Battle Mode Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {/* Random Matchmaking Mode */}
-          <Card 
-            className={`cursor-pointer transition-all hover:scale-105 hover:shadow-2xl bg-gradient-to-br from-green-900/80 to-emerald-900/80 border-4 ${
-              !account ? 'opacity-50 cursor-not-allowed' : 'hover:border-green-400 border-green-600'
-            }`}
+        {/* Tactical Mode Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+          {/* 1. RANDOM MATCH */}
+          <div
             onClick={() => account && handleModeSelect('random')}
+            className={`group relative h-[400px] bg-black border cursor-pointer overflow-hidden transition-all duration-500 ${!account
+                ? 'opacity-40 grayscale cursor-not-allowed border-white/5'
+                : 'border-primary/20 hover:border-primary hover:shadow-[0_0_40px_rgba(255,107,0,0.1)]'
+              }`}
           >
-            <CardHeader className="text-center">
-              <div className="flex justify-center mb-4">
-                <div className="p-6 bg-green-600 rounded-full">
-                  <Users className="w-12 h-12 text-white" />
-                </div>
-              </div>
-              <CardTitle className="text-2xl text-white mb-2">
-                🎲 Random Match
-              </CardTitle>
-              <CardDescription className="text-green-200 text-base">
-                Find random opponents worldwide
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="text-center">
-              <div className="space-y-2 mb-4">
-                <p className="text-sm text-green-100">✅ Matchmaking system</p>
-                <p className="text-sm text-green-100">✅ Real-time battles</p>
-                <p className="text-sm text-green-100">✅ Global leaderboard</p>
-              </div>
-              <Button 
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold"
-                disabled={!account}
-              >
-                Find Match
-              </Button>
-            </CardContent>
-          </Card>
+            {/* Design Elements */}
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute top-0 right-0 w-16 h-16 pointer-events-none">
+              <div className="absolute w-24 h-[1px] bg-primary/20 rotate-45 translate-x-12 -translate-y-8" />
+            </div>
 
-          {/* AI Mode */}
-          <Card 
-            className={`cursor-pointer transition-all hover:scale-105 hover:shadow-2xl bg-gradient-to-br from-blue-900/80 to-cyan-900/80 border-4 ${
-              !account ? 'opacity-50 cursor-not-allowed' : 'hover:border-blue-400 border-blue-600'
-            }`}
+            <div className="relative h-full p-8 flex flex-col">
+              <div className="w-16 h-16 rounded bg-primary/10 border border-primary/30 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(255,107,0,0.2)] transition-all">
+                <Users className="w-8 h-8 text-primary" />
+              </div>
+
+              <div className="mb-4">
+                <h3 className="text-3xl font-black italic uppercase text-white group-hover:text-primary transition-colors">Neural_PVP</h3>
+                <p className="text-[10px] font-black text-primary/40 uppercase tracking-widest mt-1">Random_Matchmaking_V2</p>
+              </div>
+
+              <div className="flex-1 space-y-3 mt-4 border-t border-primary/10 pt-6">
+                <p className="text-[10px] font-black text-white/40 uppercase flex items-center gap-2">
+                  <div className="w-1 h-1 bg-primary rounded-full" /> Sync_With_Global_Matrix
+                </p>
+                <p className="text-[10px] font-black text-white/40 uppercase flex items-center gap-2">
+                  <div className="w-1 h-1 bg-primary rounded-full" /> Earn_Rank_Tier_Experience
+                </p>
+                <p className="text-[10px] font-black text-white/40 uppercase flex items-center gap-2">
+                  <div className="w-1 h-1 bg-primary rounded-full" /> Dynamic_Opponent_Scaling
+                </p>
+              </div>
+
+              <button className="w-full py-4 mt-8 bg-black border border-primary/30 text-primary font-black uppercase text-[10px] tracking-[0.2em] group-hover:bg-primary group-hover:text-black transition-all">
+                Execute_Search
+              </button>
+            </div>
+            {/* Bottom Accent */}
+            <div className="absolute bottom-0 left-0 w-full h-[3px] bg-primary opacity-20 group-hover:opacity-100" />
+          </div>
+
+          {/* 2. AI BATTLE */}
+          <div
             onClick={() => account && handleModeSelect('ai')}
+            className={`group relative h-[400px] bg-black border cursor-pointer overflow-hidden transition-all duration-500 ${!account
+                ? 'opacity-40 grayscale cursor-not-allowed border-white/5'
+                : 'border-blue-500/20 hover:border-blue-500 hover:shadow-[0_0_40px_rgba(59,130,246,0.1)]'
+              }`}
           >
-            <CardHeader className="text-center">
-              <div className="flex justify-center mb-4">
-                <div className="p-6 bg-blue-600 rounded-full">
-                  <Bot className="w-12 h-12 text-white" />
-                </div>
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="relative h-full p-8 flex flex-col">
+              <div className="w-16 h-16 rounded bg-blue-500/10 border border-blue-500/30 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] transition-all">
+                <Bot className="w-8 h-8 text-blue-500" />
               </div>
-              <CardTitle className="text-2xl text-white mb-2">
-                🤖 AI Battle
-              </CardTitle>
-              <CardDescription className="text-blue-200 text-base">
-                Practice against AI opponents
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="text-center">
-              <div className="space-y-2 mb-4">
-                <p className="text-sm text-blue-100">✅ Solo practice mode</p>
-                <p className="text-sm text-blue-100">✅ Smart AI enemies</p>
-                <p className="text-sm text-blue-100">✅ No matchmaking wait</p>
-              </div>
-              <Button 
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold"
-                disabled={!account}
-              >
-                Battle AI
-              </Button>
-            </CardContent>
-          </Card>
 
-          {/* Jablix Gym Mode */}
-          <Card 
-            className={`cursor-pointer transition-all hover:scale-105 hover:shadow-2xl bg-gradient-to-br from-purple-900/80 to-pink-900/80 border-4 ${
-              !account ? 'opacity-50 cursor-not-allowed' : 'hover:border-purple-400 border-purple-600'
-            }`}
+              <div className="mb-4">
+                <h3 className="text-3xl font-black italic uppercase text-white group-hover:text-blue-500 transition-colors">Core_AI</h3>
+                <p className="text-[10px] font-black text-blue-500/40 uppercase tracking-widest mt-1">Combat_Simulation_Module</p>
+              </div>
+
+              <div className="flex-1 space-y-3 mt-4 border-t border-blue-500/10 pt-6">
+                <p className="text-[10px] font-black text-white/40 uppercase flex items-center gap-2">
+                  <div className="w-1 h-1 bg-blue-500 rounded-full" /> No_Network_Latency
+                </p>
+                <p className="text-[10px] font-black text-white/40 uppercase flex items-center gap-2">
+                  <div className="w-1 h-1 bg-blue-500 rounded-full" /> Advance_Combat_Tactic_Testing
+                </p>
+                <p className="text-[10px] font-black text-white/40 uppercase flex items-center gap-2">
+                  <div className="w-1 h-1 bg-blue-500 rounded-full" /> Zero_Risk_Deployment
+                </p>
+              </div>
+
+              <button className="w-full py-4 mt-8 bg-black border border-blue-500/30 text-blue-500 font-black uppercase text-[10px] tracking-[0.2em] group-hover:bg-blue-500 group-hover:text-black transition-all">
+                Initialize_Sync
+              </button>
+            </div>
+            <div className="absolute bottom-0 left-0 w-full h-[3px] bg-blue-500 opacity-20 group-hover:opacity-100" />
+          </div>
+
+          {/* 3. JABLIX GYM */}
+          <div
             onClick={() => account && handleModeSelect('gym')}
+            className={`group relative h-[400px] bg-black border cursor-pointer overflow-hidden transition-all duration-500 ${!account
+                ? 'opacity-40 grayscale cursor-not-allowed border-white/5'
+                : 'border-purple-500/20 hover:border-purple-500 hover:shadow-[0_0_40px_rgba(168,85,247,0.1)]'
+              }`}
           >
-            <CardHeader className="text-center">
-              <div className="flex justify-center mb-4">
-                <div className="p-6 bg-purple-600 rounded-full">
-                  <Dumbbell className="w-12 h-12 text-white" />
-                </div>
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="relative h-full p-8 flex flex-col">
+              <div className="w-16 h-16 rounded bg-purple-500/10 border border-purple-500/30 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] transition-all">
+                <Dumbbell className="w-8 h-8 text-purple-500" />
               </div>
-              <CardTitle className="text-2xl text-white mb-2">
-                🏟️ Jablix Gym
-              </CardTitle>
-              <CardDescription className="text-purple-200 text-base">
-                Create lobbies and battle friends
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="text-center">
-              <div className="space-y-2 mb-4">
-                <p className="text-sm text-purple-100">✅ Private lobbies</p>
-                <p className="text-sm text-purple-100">✅ Challenge friends</p>
-                <p className="text-sm text-purple-100">✅ Gym NFT ownership</p>
+
+              <div className="mb-4">
+                <h3 className="text-3xl font-black italic uppercase text-white group-hover:text-purple-500 transition-colors">Nexus_Gym</h3>
+                <p className="text-[10px] font-black text-purple-500/40 uppercase tracking-widest mt-1">Private_Lobby_Protocol</p>
               </div>
-              <Button 
-                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold"
-                disabled={!account}
-              >
-                Enter Gym
-              </Button>
-            </CardContent>
-          </Card>
+
+              <div className="flex-1 space-y-3 mt-4 border-t border-purple-500/10 pt-6">
+                <p className="text-[10px] font-black text-white/40 uppercase flex items-center gap-2">
+                  <div className="w-1 h-1 bg-purple-500 rounded-full" /> Challenge_Known_Operators
+                </p>
+                <p className="text-[10px] font-black text-white/40 uppercase flex items-center gap-2">
+                  <div className="w-1 h-1 bg-purple-500 rounded-full" /> Managed_Arena_Environment
+                </p>
+                <p className="text-[10px] font-black text-white/40 uppercase flex items-center gap-2">
+                  <div className="w-1 h-1 bg-purple-500 rounded-full" /> Unit_Specialization_Training
+                </p>
+              </div>
+
+              <button className="w-full py-4 mt-8 bg-black border border-purple-500/30 text-purple-500 font-black uppercase text-[10px] tracking-[0.2em] group-hover:bg-purple-500 group-hover:text-black transition-all">
+                Secure_Access
+              </button>
+            </div>
+            <div className="absolute bottom-0 left-0 w-full h-[3px] bg-purple-500 opacity-20 group-hover:opacity-100" />
+          </div>
+
         </div>
 
-        {/* Additional Info */}
-        <div className="text-center">
-          <p className="text-sm text-gray-400">
-            {account 
-              ? "Select a mode to start your battle journey" 
-              : "Connect your wallet to access battle modes"}
-          </p>
+        {/* HUD Footer */}
+        <div className="mt-8 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 bg-primary rounded-full animate-ping" />
+              <p className="text-[9px] font-black text-white/30 uppercase tracking-[0.3em]">Neural_Net_Link_Established</p>
+            </div>
+            <div className="w-[1px] h-3 bg-white/10 hidden md:block" />
+            <p className="text-[9px] font-mono text-white/20">V_0.8.2_BETA // [DRARIUX_OS]</p>
+          </div>
+          <p className="text-[9px] font-black text-white/10 italic">"VICTORY THROUGH SUPERIOR PROTOCOL"</p>
         </div>
       </div>
     </div>

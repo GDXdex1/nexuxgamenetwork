@@ -2,9 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useCurrentAccount } from '@mysten/dapp-kit';
-import { Button } from '@/components/ui/button';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Target, Activity, Zap, Radio, Globe, Shield, Sword, X, ChevronRight, TrendingUp } from 'lucide-react';
 import { toast } from 'sonner';
 import { useBattle } from '@/hooks/useBattle';
 import type { BattleMode } from './BattleModeSelector';
@@ -35,15 +33,9 @@ export default function Matchmaking({ mode, selectedTeam, betLevel, onMatchFound
 
   // Get mode-specific titles
   const getModeTitle = (): string => {
-    if (mode === 'random') return '🎲 Random Matchmaking';
-    if (mode === 'ai') return '🤖 AI Battle Mode';
-    return '⚔️ Find Opponent';
-  };
-
-  const getModeDescription = (): string => {
-    if (mode === 'random') return 'Finding random opponents worldwide...';
-    if (mode === 'ai') return 'Preparing AI opponent...';
-    return 'Connect with players in real-time';
+    if (mode === 'random') return 'RANDOM_LINK';
+    if (mode === 'ai') return 'AI_CALIBRATION';
+    return 'UNIT_DEPLOYMENT';
   };
 
   // Listen for battle start event from Socket.IO
@@ -51,8 +43,13 @@ export default function Matchmaking({ mode, selectedTeam, betLevel, onMatchFound
     const unsubscribe = onBattleStart((data: BattleStartEvent) => {
       console.log('[Matchmaking] Battle start event received:', data);
       setIsSearching(false);
-      toast.success('Match found! Preparing battle...');
-      
+      toast.success(
+        <div className="bg-black border border-primary/50 p-4 rounded-xl">
+          <p className="font-black text-primary uppercase text-xs mb-1 tracking-widest">Signal_Captured</p>
+          <p className="text-[10px] text-white/60 uppercase">Match confirmed. Initializing arena environment...</p>
+        </div>
+      );
+
       const matchData: MatchData = {
         matchId: data.battleId,
         playerTeam: selectedTeam,
@@ -60,7 +57,7 @@ export default function Matchmaking({ mode, selectedTeam, betLevel, onMatchFound
         isHost: true,
         mode: mode,
       };
-      
+
       onMatchFound(matchData);
     });
 
@@ -69,9 +66,8 @@ export default function Matchmaking({ mode, selectedTeam, betLevel, onMatchFound
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
-    
+
     if (isSearching) {
-      // Timer for display
       interval = setInterval(() => {
         setSearchTime(prev => prev + 1);
       }, 1000);
@@ -84,254 +80,146 @@ export default function Matchmaking({ mode, selectedTeam, betLevel, onMatchFound
 
   const startSearch = (): void => {
     if (!account?.address) {
-      toast.error('Please connect your wallet first');
+      toast.error('Connect wallet to establish neural bridge.');
       return;
     }
 
     if (selectedTeam.length !== 3) {
-      toast.error('Please select 3 Jablixes for your team');
+      toast.error('Select 3 tactical units for deployment.');
       return;
     }
 
     if (!isConnected) {
-      toast.error('Not connected to battle server. Connecting...');
+      toast.error('Tactical server offline. Retrying link...');
       return;
     }
 
     setIsSearching(true);
     setSearchTime(0);
 
-    // Use Socket.IO directly for both AI and Random modes
     if (mode === 'ai') {
-      console.log('[Matchmaking] Starting AI battle via Socket.IO');
       startAI(selectedTeam, 'medium');
-      toast.success('Starting AI battle...');
     } else if (mode === 'random') {
-      console.log('[Matchmaking] Joining random matchmaking via Socket.IO');
       joinRandom(selectedTeam, betLevel);
-      toast.success('Joined matchmaking queue');
     }
   };
 
-  const cancelSearch = (): void => {
-    setIsSearching(false);
-    setSearchTime(0);
-    toast.info('Search cancelled');
-    onCancel();
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-pink-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-      </div>
+    <div className="min-h-screen bg-[#010101] text-white flex items-center justify-center p-4 relative overflow-hidden font-sans">
+      {/* Tech Grid Background */}
+      <div className="absolute inset-0 tech-bg-grid opacity-20 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-primary/5 pointer-events-none" />
 
-      <div className="max-w-2xl w-full relative z-10">
-        {/* Home Button with Logo - Top Left */}
-        <div className="absolute top-0 left-0">
-          <button
-            onClick={onCancel}
-            className="transition-all transform hover:scale-110 active:scale-95"
-            title="Return to Main Menu"
-          >
-            <img 
-              src="https://usdozf7pplhxfvrl.public.blob.vercel-storage.com/56fa9ed2-8a4e-42ba-8746-d03370944e7d-k39OOt1uF85tIpdfal9oa1yj57AqgR"
-              alt="Home"
-              className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-2xl"
-            />
+      <div className="max-w-2xl w-full relative z-10 text-center">
+        {/* Navigation HUD */}
+        <div className="absolute -top-12 left-1/2 -translate-x-1/2 flex items-center gap-4 opacity-40 hover:opacity-100 transition-opacity">
+          <button onClick={onCancel} className="flex items-center gap-2 group">
+            <div className="w-8 h-[1px] bg-primary group-hover:w-12 transition-all" />
+            <span className="text-[10px] font-black uppercase tracking-[0.3em]">Abort_Signal</span>
           </button>
         </div>
 
-        {/* Banner */}
-        <div className="text-center mb-12">
-          <img
-            src="https://usdozf7pplhxfvrl.public.blob.vercel-storage.com/4f3ded0e-dfc8-4203-a8b5-c5520107ed9b-4CHtf1hokrrrUpgGLZRmBEQ5pDYP3C"
-            alt="Jablix Arena Banner"
-            className="w-full max-w-3xl mx-auto rounded-3xl shadow-2xl border-4 border-purple-500/50 mb-8 hover:border-purple-400/70 transition-all duration-300"
-          />
-          <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-pink-300 mb-3">
+        {/* Tactical Banner HUD */}
+        <div className="mb-12 relative group">
+          <div className="absolute inset-x-0 -bottom-4 h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+          <div className="w-24 h-24 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform duration-500">
+            {mode === 'ai' ? <Zap className="w-10 h-10 text-primary" /> : <Globe className="w-10 h-10 text-primary" />}
+          </div>
+
+          <h2 className="text-5xl md:text-7xl font-black italic tracking-tighter text-white uppercase font-heading mb-2">
             {getModeTitle()}
           </h2>
-          <p className="text-xl text-purple-200 font-bold tracking-wide">
-            {mode === 'random' ? 'Global Matchmaking System' : mode === 'ai' ? 'Practice Mode - Battle AI Opponents' : '3v3 NFT Card Battles'}
-          </p>
-          <div className="flex items-center justify-center gap-3 mt-4">
-            <span className="px-4 py-2 bg-purple-800/50 rounded-full text-sm text-purple-200 border border-purple-500/30">
-              ⚡ Fast-Paced
-            </span>
-            <span className="px-4 py-2 bg-indigo-800/50 rounded-full text-sm text-indigo-200 border border-indigo-500/30">
-              🎮 Strategic
-            </span>
-            <span className="px-4 py-2 bg-blue-800/50 rounded-full text-sm text-blue-200 border border-blue-500/30">
-              🌐 Global
-            </span>
+          <div className="flex items-center justify-center gap-4 text-xs font-black uppercase tracking-[0.4em] text-white/20">
+            <span>Sector_49</span>
+            <div className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+            <span>Protocol_V8</span>
           </div>
         </div>
 
-        {/* Matchmaking Card */}
-        <div className="bg-gradient-to-br from-gray-900/90 via-gray-900/80 to-gray-900/90 backdrop-blur-xl border-4 border-purple-500/50 rounded-3xl p-10 shadow-2xl">
-          {/* Wallet Connection Warning */}
-          {!account && (
-            <Alert className="mb-6 bg-red-900/50 border-red-500">
-              <AlertCircle className="h-5 w-5" />
-              <AlertDescription className="text-white font-semibold">
-                ⚠️ You need to connect your Sui wallet in Jablix Arena before starting a battle
-              </AlertDescription>
-            </Alert>
-          )}
+        {/* Search Module HUD */}
+        <div className="bg-black/40 border border-white/10 rounded-tr-[4rem] p-12 backdrop-blur-xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 -translate-y-16 translate-x-16 rounded-full blur-3xl" />
 
           {!isSearching ? (
-            // Initial state - Search button
-            <div className="text-center">
-              <div className="mb-10">
-                <div className="relative inline-block mb-6">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full blur-2xl opacity-50 animate-pulse" />
-                  <div className="relative p-8 bg-gradient-to-br from-purple-600 to-indigo-700 rounded-full shadow-2xl">
-                    {mode === 'ai' ? (
-                      <svg className="w-20 h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                    ) : (
-                      <svg className="w-20 h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
-                    )}
-                  </div>
-                </div>
-                <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-pink-300 mb-4">
-                  {getModeTitle()}
-                </h2>
-                <p className="text-gray-400 text-lg">
-                  {getModeDescription()}
-                </p>
-              </div>
+            <div className="animate-in fade-in zoom-in duration-500">
+              <p className="text-xs text-white/40 uppercase tracking-widest mb-12 leading-loose max-w-[400px] mx-auto">
+                {mode === 'random'
+                  ? '"Scanning global network for unauthorized combat signatures. Stake verified for engagement."'
+                  : '"Initializing local AI construct with randomized unit parameters for tactical training."'}
+              </p>
 
-              <Button
+              <button
                 onClick={startSearch}
                 disabled={!account}
-                className="bg-gradient-to-r from-green-600 via-emerald-600 to-green-600 hover:from-green-700 hover:via-emerald-700 hover:to-green-700 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-black py-8 px-16 rounded-2xl text-3xl transition-all transform hover:scale-110 active:scale-95 shadow-2xl hover:shadow-green-500/50 w-full"
+                className="w-full py-8 bg-primary text-black font-black uppercase text-base tracking-[0.5em] hover:bg-white transition-all rounded shadow-[0_0_30px_rgba(255,107,0,0.2)] disabled:opacity-20 flex items-center justify-center gap-6"
               >
-                {mode === 'ai' ? '🤖 START AI BATTLE' : '🎮 FIND MATCH'}
-              </Button>
+                <Sword className="w-6 h-6 fill-current" />
+                INIT_SEQUENCE
+              </button>
 
-              {/* Additional info */}
-              <div className="mt-10 pt-8 border-t border-gray-700/50">
-                <div className="grid grid-cols-3 gap-6 text-center">
-                  <div className="group hover:scale-110 transition-transform">
-                    <div className="text-4xl mb-2 group-hover:scale-125 transition-transform">⚡</div>
-                    <div className="text-sm text-gray-400 font-semibold">Instant</div>
+              <div className="mt-12 grid grid-cols-3 gap-8 opacity-20">
+                {['SEC_STREAM', 'BIO_SYNC', 'JXC_TRANS'].map((t, idx) => (
+                  <div key={idx} className="text-center">
+                    <p className="text-[8px] font-black uppercase tracking-widest">{t}</p>
+                    <div className="w-8 h-[1px] bg-white mx-auto mt-2" />
                   </div>
-                  <div className="group hover:scale-110 transition-transform">
-                    <div className="text-4xl mb-2 group-hover:scale-125 transition-transform">🌐</div>
-                    <div className="text-sm text-gray-400 font-semibold">Worldwide</div>
-                  </div>
-                  <div className="group hover:scale-110 transition-transform">
-                    <div className="text-4xl mb-2 group-hover:scale-125 transition-transform">🏆</div>
-                    <div className="text-sm text-gray-400 font-semibold">Competitive</div>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           ) : (
-            // Searching state
-            <div className="text-center">
-              <div className="mb-10">
-                {/* Search Animation */}
-                <div className="relative inline-block">
-                  <div className="w-40 h-40 border-8 border-purple-500 border-t-transparent rounded-full animate-spin" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-28 h-28 bg-gradient-to-br from-purple-600 to-indigo-700 rounded-full flex items-center justify-center shadow-2xl">
-                      <svg
-                        className="w-14 h-14 text-white animate-pulse"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-
-                <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-pink-300 mt-8 mb-4">
-                  {mode === 'ai' ? 'Preparing AI Opponent...' : 'Searching for Opponent...'}
-                </h2>
-                <p className="text-3xl text-purple-300 font-mono font-bold">
-                  {Math.floor(searchTime / 60)}:{(searchTime % 60).toString().padStart(2, '0')}
-                </p>
-              </div>
-
-              {/* Queue Info - Only show for random mode */}
-              {mode === 'random' && (
-                <div className="bg-gradient-to-br from-gray-800/80 to-gray-900/80 border-2 border-purple-600/50 rounded-2xl p-8 mb-8 backdrop-blur-sm">
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="text-gray-400 text-lg font-semibold">Players in queue:</span>
-                    <span className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-                      {playersInQueue}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-400 text-lg font-semibold">Region:</span>
-                    <span className="text-white font-bold text-xl">🌍 Global</span>
-                  </div>
-                </div>
-              )}
-
-              {/* AI Info */}
-              {mode === 'ai' && (
-                <div className="bg-gradient-to-br from-blue-900/50 to-cyan-900/50 border-2 border-blue-500/50 rounded-2xl p-6 mb-8">
-                  <p className="text-blue-200 text-center font-semibold">
-                    🤖 AI opponent is being generated with random Jabs...
+            <div className="text-center animate-in fade-in duration-500">
+              {/* Search Animation Component */}
+              <div className="relative w-48 h-48 mx-auto mb-10">
+                <div className="absolute inset-0 border-[3px] border-primary/20 rounded-full" />
+                <div className="absolute inset-0 border-[3px] border-primary border-t-transparent rounded-full animate-spin" />
+                <div className="absolute inset-4 border border-white/5 rounded-full animate-pulse" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-1">Elapsed</p>
+                  <p className="text-3xl font-black font-mono tracking-tighter text-white">
+                    {Math.floor(searchTime / 60)}:{(searchTime % 60).toString().padStart(2, '0')}
                   </p>
                 </div>
+              </div>
+
+              <h3 className="text-xl font-black italic uppercase tracking-[0.2em] text-white mb-4">
+                INTERCEPTING_SIGNAL...
+              </h3>
+
+              {/* Queue Status HUD */}
+              {mode === 'random' && (
+                <div className="flex items-center justify-center gap-8 mb-10 py-4 bg-white/5 border border-white/5 rounded-xl">
+                  <div className="text-left">
+                    <p className="text-[7px] font-black text-white/20 uppercase tracking-widest">Nodes_In_Queue</p>
+                    <p className="text-lg font-black text-primary">{playersInQueue}</p>
+                  </div>
+                  <div className="w-[1px] h-8 bg-white/10" />
+                  <div className="text-left">
+                    <p className="text-[7px] font-black text-white/20 uppercase tracking-widest">Network_Range</p>
+                    <p className="text-lg font-black text-white">GLOBAL</p>
+                  </div>
+                </div>
               )}
 
-              {/* Progress Bar */}
-              <div className="mb-8">
-                <div className="bg-gray-800 h-3 rounded-full overflow-hidden border border-purple-600/30">
-                  <div
-                    className="h-full bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 transition-all duration-1000 animate-pulse"
-                    style={{ width: `${Math.min((searchTime / 10) * 100, 100)}%` }}
-                  />
-                </div>
-              </div>
-
-              <Button
+              <button
                 onClick={cancelSearch}
-                className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-black py-6 px-12 rounded-2xl text-2xl transition-all transform hover:scale-110 active:scale-95 shadow-2xl hover:shadow-red-500/50 w-full"
+                className="w-full py-5 bg-white/5 border border-white/10 text-white/40 hover:text-white hover:border-red-500/50 transition-all rounded font-black uppercase text-[10px] tracking-[0.4em]"
               >
-                ❌ CANCEL SEARCH
-              </Button>
-
-              {/* Tips while waiting */}
-              <div className="mt-8 pt-6 border-t border-gray-700/50">
-                <p className="text-sm text-gray-400 italic">
-                  💡 Tip: {mode === 'ai' 
-                    ? 'AI battles are perfect for testing new strategies and team compositions' 
-                    : 'Each Jablix has unique abilities based on their element'}
-                </p>
-              </div>
+                HALT_SEARCH_OP
+              </button>
             </div>
           )}
         </div>
 
-        {/* Footer info */}
-        <div className="text-center mt-10">
-          <p className="text-sm text-gray-500">
-            {mode === 'random' 
-              ? 'Real-time matchmaking system • Powered by SpacetimeDB' 
-              : mode === 'ai'
-              ? 'Practice mode • Smart AI opponents'
-              : 'Matchmaking system • Powered by Sui Network'}
-          </p>
+        {/* HUD Metadata Decorations */}
+        <div className="mt-20 flex flex-col items-center gap-6 opacity-5 pointer-events-none">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-[1px] bg-white" />
+            <p className="text-[8px] font-black uppercase tracking-[1em]">Tactical_Stream_Decrypted</p>
+            <div className="w-16 h-[1px] bg-white" />
+          </div>
+          <div className="flex gap-2">
+            {[...Array(5)].map((_, i) => <div key={i} className="w-1.5 h-1.5 bg-white rounded-full" />)}
+          </div>
         </div>
       </div>
     </div>

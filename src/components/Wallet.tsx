@@ -4,7 +4,25 @@ import { useCurrentAccount } from '@mysten/dapp-kit';
 import { useJxcBalance, useUserJabs } from '@/hooks/useSuiData';
 import { formatJxcBalance, getAddressExplorerLink, COIN_TYPES } from '@/config/suiConfig';
 import { useState } from 'react';
-import { CheckCircle2, Copy, ExternalLink, Loader2, TrendingUp, Eye, Send, ArrowLeftRight } from 'lucide-react';
+import {
+  CheckCircle2,
+  Copy,
+  ExternalLink,
+  Loader2,
+  TrendingUp,
+  Eye,
+  Send,
+  ArrowLeftRight,
+  ArrowLeft,
+  Shield,
+  Zap,
+  Sword,
+  Search,
+  Lock,
+  ChevronRight,
+  Coins,
+  LayoutDashboard
+} from 'lucide-react';
 import WalletJabsList from './WalletJabsList';
 import TransferManager from './TransferManager';
 
@@ -21,7 +39,7 @@ export default function Wallet({ onBackToMain }: WalletProps) {
   const [showTransfer, setShowTransfer] = useState(false);
 
   // Format address for display (shortened)
-  const shortAddress = account?.address 
+  const shortAddress = account?.address
     ? `${account.address.slice(0, 6)}...${account.address.slice(-4)}`
     : '';
 
@@ -60,17 +78,19 @@ export default function Wallet({ onBackToMain }: WalletProps) {
     }));
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-orange-700 p-4 md:p-8 pt-16 md:pt-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-6">
+      <div className="min-h-screen bg-[#010101] text-white p-4 md:p-8 relative overflow-hidden font-sans">
+        <div className="absolute inset-0 tech-bg-grid opacity-20 pointer-events-none" />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="mb-8">
             <button
               onClick={() => setShowTransfer(false)}
-              className="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105 shadow-lg"
+              className="group relative p-4 bg-white/5 border border-white/10 hover:border-primary transition-all rounded-tr-xl flex items-center justify-center"
             >
-              ← Back to Wallet
+              <ArrowLeft className="w-5 h-5 text-white/40 group-hover:text-primary transition-colors" />
+              <span className="ml-2 text-xs font-black uppercase tracking-widest hidden md:inline">Back_To_Vault</span>
             </button>
           </div>
-          <TransferManager 
+          <TransferManager
             jablixList={scannedJabs}
             onTransferComplete={() => {
               jxcBalanceQuery.refetch();
@@ -84,20 +104,23 @@ export default function Wallet({ onBackToMain }: WalletProps) {
 
   if (!account) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-orange-700 p-4 md:p-8 pt-16 md:pt-8 flex items-center justify-center">
-        <div className="max-w-md bg-gradient-to-br from-purple-900/90 to-pink-900/90 border-4 border-pink-500/50 rounded-3xl p-8 text-center backdrop-blur-sm shadow-2xl">
-          <div className="text-6xl mb-4">🔒</div>
-          <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-300 to-orange-300 mb-4">
-            Wallet Locked
+      <div className="min-h-screen bg-[#010101] flex items-center justify-center p-4 relative overflow-hidden">
+        <div className="absolute inset-0 tech-bg-grid opacity-10 pointer-events-none" />
+        <div className="max-w-md w-full bg-black/40 border-2 border-red-500/20 rounded-tr-[3rem] p-12 text-center backdrop-blur-xl relative z-10">
+          <div className="w-20 h-20 bg-red-500/10 border border-red-500/30 rounded-full flex items-center justify-center mx-auto mb-8 animate-pulse text-red-500">
+            <Lock className="w-10 h-10" />
+          </div>
+          <h2 className="text-3xl font-black italic tracking-tighter uppercase font-heading text-white mb-4">
+            AUTH_REQUIRED
           </h2>
-          <p className="text-pink-200 mb-6">
-            Connect your Sui wallet to access your inventory, JXC balance, and transfer assets.
+          <p className="text-xs text-white/40 uppercase tracking-widest mb-8 leading-relaxed">
+            "Neural link with decentralized storage not established. Connect Sui wallet to proceed."
           </p>
           <button
             onClick={onBackToMain}
-            className="w-full bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105 shadow-lg"
+            className="w-full py-4 bg-white/5 border border-white/10 text-white hover:border-primary hover:text-primary font-black uppercase text-xs tracking-[0.3em] transition-all rounded-tr-xl"
           >
-            ← Back to Main Menu
+            Terminal_Exit
           </button>
         </div>
       </div>
@@ -105,175 +128,185 @@ export default function Wallet({ onBackToMain }: WalletProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-orange-700 p-4 md:p-8 pt-16 md:pt-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header with Banner */}
-        <div className="mb-6 relative rounded-3xl overflow-hidden shadow-2xl">
-          <img
-            src="https://usdozf7pplhxfvrl.public.blob.vercel-storage.com/6a31ada0-0910-47a2-b8a7-fb2de97048b4-jG3gX9tWmrrESJpHzXgRARh8djhnBz"
-            alt="Wallet Banner"
-            className="w-full h-40 md:h-56 lg:h-72 object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-          <button
-            onClick={onBackToMain}
-            className="absolute top-4 right-4 bg-black/50 backdrop-blur-md hover:bg-black/70 text-white font-bold py-2 px-4 md:py-3 md:px-6 rounded-xl transition-all transform hover:scale-105 shadow-lg border-2 border-white/20"
-          >
-            ← Back
-          </button>
-          <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6">
-            <h1 className="text-3xl md:text-5xl font-black text-white drop-shadow-lg">
-              💰 My Wallet
-            </h1>
-          </div>
-        </div>
+    <div className="min-h-screen bg-[#010101] text-white p-4 md:p-8 relative overflow-hidden font-sans">
+      {/* Tech Grid Background */}
+      <div className="absolute inset-0 tech-bg-grid opacity-20 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-primary/5 pointer-events-none" />
 
-        {/* Wallet Address Card */}
-        <div className="mb-6 bg-gradient-to-br from-purple-900/90 to-pink-900/90 border-4 border-pink-500/50 rounded-3xl p-4 md:p-6 shadow-2xl backdrop-blur-sm">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="flex-1">
-              <p className="text-xs md:text-sm text-pink-300 mb-1">Connected Wallet</p>
-              <button
-                onClick={handleCopyAddress}
-                className="flex items-center gap-2 text-lg md:text-xl font-mono text-white hover:text-pink-200 transition-colors group"
-              >
-                {shortAddress}
-                {copied ? (
-                  <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 text-green-400 flex-shrink-0" />
-                ) : (
-                  <Copy className="w-4 h-4 md:w-5 md:h-5 opacity-50 group-hover:opacity-100 transition-opacity flex-shrink-0" />
-                )}
-              </button>
-              {copied && (
-                <p className="text-xs text-green-400 mt-1">Address copied!</p>
-              )}
+      <div className="max-w-7xl mx-auto relative z-10">
+
+        {/* Navigation HUD */}
+        <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-6 border-b border-primary/20 pb-8">
+          <div className="flex items-center gap-6">
+            <button
+              onClick={onBackToMain}
+              className="group relative p-4 bg-white/5 border border-white/10 hover:border-primary transition-all rounded-tr-xl flex items-center justify-center"
+            >
+              <ArrowLeft className="w-5 h-5 text-white/40 group-hover:text-primary transition-colors" />
+            </button>
+            <div className="text-left">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-8 h-[1px] bg-primary/40" />
+                <span className="text-[10px] font-black tracking-[0.3em] text-primary/60 uppercase">Asset_Inventory</span>
+              </div>
+              <h1 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase font-heading">
+                NEURAL <span className="text-primary neon-text-orange">VAULT</span>
+              </h1>
             </div>
+          </div>
+
+          {/* Wallet Quick Actions */}
+          <div className="flex items-center gap-4">
+            <button
+              onClick={handleCopyAddress}
+              className="flex flex-col items-end group"
+            >
+              <span className="text-[8px] font-black text-white/30 uppercase tracking-widest mb-1">Wallet_Protocol</span>
+              <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-tr-xl group-hover:border-primary/50 transition-all">
+                <span className="text-xs font-mono text-white/60 group-hover:text-primary transition-colors">{shortAddress}</span>
+                {copied ? (
+                  <CheckCircle2 className="w-3 h-3 text-green-500" />
+                ) : (
+                  <Copy className="w-3 h-3 text-white/20 group-hover:text-primary" />
+                )}
+              </div>
+            </button>
             <a
               href={getAddressExplorerLink(account.address)}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white font-bold py-2 px-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg"
+              className="p-4 bg-white/5 border border-white/10 hover:border-primary hover:text-primary transition-all rounded-tr-xl flex items-center justify-center"
             >
-              <ExternalLink className="w-4 h-4" />
-              <span className="hidden md:inline">View on Explorer</span>
-              <span className="md:hidden">Explorer</span>
+              <ExternalLink className="w-5 h-5" />
             </a>
           </div>
         </div>
 
-        {/* Balance Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
+        {/* Global Statistics Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {/* JXC Balance Card */}
-          <div className="bg-gradient-to-br from-purple-900/90 to-pink-900/90 border-4 border-pink-500/50 rounded-3xl p-6 md:p-8 shadow-2xl backdrop-blur-sm">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex-1">
-                <p className="text-xs md:text-sm text-pink-300 mb-1">JXC Balance</p>
-                <h2 className="text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-300 to-orange-300 break-all">
-                  {jxcFormatted}
+          <div className="md:col-span-2 relative group">
+            <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors rounded-tr-[3rem] border border-white/10 group-hover:border-primary/30" />
+            <div className="relative p-8 flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="text-center md:text-left">
+                <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+                  <Coins className="w-4 h-4 text-primary" />
+                  <span className="text-[10px] font-black uppercase tracking-widest text-primary/60">Balance_Index</span>
+                </div>
+                <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter text-white uppercase font-heading">
+                  {jxcFormatted} <span className="text-xl text-primary font-mono not-italic opacity-40">JXC</span>
                 </h2>
+                <div className="mt-4 flex flex-wrap justify-center md:justify-start gap-3">
+                  <a
+                    href={`https://suiscan.xyz/testnet/coin/${COIN_TYPES.JXC}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 bg-black/40 border border-white/5 hover:border-primary/40 rounded text-[9px] font-black uppercase tracking-widest text-white/40 hover:text-white transition-all"
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                    Smart_Contract
+                  </a>
+                </div>
               </div>
-              <div className="bg-gradient-to-br from-pink-500/20 to-orange-500/20 p-2 md:p-3 rounded-xl border-2 border-pink-400/30 flex-shrink-0">
-                <TrendingUp className="w-6 h-6 md:w-8 md:h-8 text-pink-300" />
+              <div className="relative">
+                <div className="w-32 h-32 md:w-40 md:h-40 flex items-center justify-center rounded-full border-2 border-primary/20 bg-primary/5 group-hover:scale-105 transition-transform duration-500">
+                  <TrendingUp className="w-12 h-12 md:w-16 md:h-16 text-primary animate-pulse" />
+                </div>
+                <div className="absolute inset-0 bg-primary/20 blur-[50px] opacity-20 pointer-events-none" />
               </div>
-            </div>
-            {jxcBalanceQuery.isLoading && (
-              <div className="flex items-center gap-2 text-pink-300 mb-4">
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <p className="text-sm">Loading...</p>
-              </div>
-            )}
-            <div className="pt-4 border-t border-pink-500/30">
-              <p className="text-xs text-pink-300 mb-3">
-                Official currency of Jablix Arena
-              </p>
-              <a
-                href={`https://suiscan.xyz/testnet/coin/${COIN_TYPES.JXC}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-xs text-pink-300 hover:text-pink-200 transition-colors bg-pink-500/10 hover:bg-pink-500/20 px-3 py-2 rounded-lg border border-pink-500/30"
-              >
-                <ExternalLink className="w-3 h-3" />
-                View Token Contract
-              </a>
             </div>
           </div>
 
-          {/* Jabs Collection Card */}
-          <div className="bg-gradient-to-br from-purple-900/90 to-pink-900/90 border-4 border-pink-500/50 rounded-3xl p-6 md:p-8 shadow-2xl backdrop-blur-sm">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex-1">
-                <p className="text-xs md:text-sm text-pink-300 mb-1">Jabs Collection</p>
-                <h2 className="text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-300 to-orange-300">
-                  {jabsCount} Jabs
-                </h2>
+          {/* Asset Count Quick HUD */}
+          <div className="bg-black/40 border border-white/10 p-8 rounded-tr-[2rem] relative overflow-hidden">
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-6">
+                <LayoutDashboard className="w-4 h-4 text-primary" />
+                <span className="text-[10px] font-black uppercase tracking-widest text-white/40">Unit_Registry</span>
               </div>
-              <div className="bg-gradient-to-br from-orange-500/20 to-pink-500/20 p-2 md:p-3 rounded-xl border-2 border-orange-400/30 flex-shrink-0">
-                <span className="text-3xl md:text-4xl">🎴</span>
+
+              <div className="space-y-6">
+                <div className="flex items-end justify-between border-b border-white/5 pb-2">
+                  <div>
+                    <p className="text-[8px] font-black text-white/20 uppercase">Core_Modules</p>
+                    <p className="text-2xl font-black text-white">{elementalCount}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[8px] font-black text-white/20 uppercase text-primary">PHASE_01/02</p>
+                  </div>
+                </div>
+                <div className="flex items-end justify-between border-b border-white/5 pb-2">
+                  <div>
+                    <p className="text-[8px] font-black text-white/20 uppercase">Special_Protocols</p>
+                    <p className="text-2xl font-black text-white">{specialCount}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[8px] font-black text-white/20 uppercase text-primary italic font-heading">ELITE</p>
+                  </div>
+                </div>
               </div>
+
+              <button
+                onClick={() => setShowJabsList(true)}
+                disabled={jabsCount === 0}
+                className="w-full mt-8 py-4 bg-primary text-black font-black uppercase text-xs tracking-widest hover:bg-white transition-all rounded disabled:opacity-20 disabled:cursor-not-allowed group shadow-lg shadow-primary/20"
+              >
+                <div className="flex items-center justify-center gap-2">
+                  <Eye className="w-4 h-4" />
+                  Launch_Visualizer
+                </div>
+              </button>
             </div>
-            {jabsQuery.isLoading && (
-              <div className="flex items-center gap-2 text-pink-300 mb-4">
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <p className="text-sm">Loading...</p>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 skew-x-[-12deg] translate-x-16 -translate-y-8 pointer-events-none" />
+          </div>
+        </div>
+
+        {/* Tactical Actions HUD */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Transfer HUD */}
+          <div className="group relative overflow-hidden bg-black/60 border border-white/10 rounded-tr-[2.5rem] p-8 hover:border-cyan-500/50 transition-all duration-300">
+            <div className="flex items-center gap-6 mb-8">
+              <div className="w-14 h-14 bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center rounded-tr-xl">
+                <ArrowLeftRight className="w-7 h-7 text-cyan-400" />
               </div>
-            )}
-            <div className="pt-4 border-t border-pink-500/30 flex gap-4 mb-4">
               <div>
-                <p className="text-xl md:text-2xl font-bold text-pink-200">{elementalCount}</p>
-                <p className="text-xs text-pink-300">Elementals</p>
-              </div>
-              <div className="border-l border-pink-500/30 pl-4">
-                <p className="text-xl md:text-2xl font-bold text-orange-200">{specialCount}</p>
-                <p className="text-xs text-orange-300">Specials</p>
+                <h3 className="text-2xl font-black italic tracking-tighter uppercase font-heading text-white">Transfer_Link</h3>
+                <p className="text-[9px] font-black uppercase tracking-widest text-cyan-400/60">Sync_Asset_Data_Channels</p>
               </div>
             </div>
+
+            <p className="text-xs text-white/30 uppercase tracking-widest mb-8 leading-relaxed">
+              "Secure peer-to-peer relay for JXC tokens and Unit objects. Verification required for all outgoing signals."
+            </p>
+
             <button
-              onClick={() => setShowJabsList(true)}
-              disabled={jabsCount === 0}
-              className="w-full bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-bold py-2 md:py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg"
+              onClick={() => setShowTransfer(true)}
+              className="w-full py-4 bg-cyan-500 text-black font-black uppercase text-[11px] tracking-[0.3em] hover:bg-white transition-all rounded flex items-center justify-center gap-2 group-hover:shadow-[0_0_30px_rgba(34,211,238,0.2)]"
             >
-              <Eye className="w-4 h-4 md:w-5 md:h-5" />
-              View All Jabs
+              <Send className="w-4 h-4" />
+              Open_Transfer_Console
             </button>
           </div>
-        </div>
 
-        {/* Transfer Assets Section */}
-        <div className="bg-gradient-to-br from-purple-900/90 to-pink-900/90 border-4 border-pink-500/50 rounded-3xl p-6 md:p-8 shadow-2xl backdrop-blur-sm mb-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="bg-gradient-to-br from-cyan-500/20 to-blue-500/20 p-3 rounded-xl border-2 border-cyan-400/30">
-              <ArrowLeftRight className="w-6 h-6 md:w-8 md:h-8 text-cyan-300" />
+          {/* Network Intelligence HUD */}
+          <div className="bg-white/5 border border-white/10 p-8 rounded-tr-[2.5rem] relative overflow-hidden flex flex-col justify-center text-center group">
+            <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:border-primary/50 transition-colors">
+              <span className="text-3xl grayscale group-hover:grayscale-0 transition-all">🌐</span>
             </div>
-            <div>
-              <h2 className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-300">
-                Transfer Assets
-              </h2>
-              <p className="text-xs md:text-sm text-cyan-300/80">
-                Send JXC tokens, Jabs NFTs, or Gyms to other addresses
-              </p>
-            </div>
-          </div>
-          <button
-            onClick={() => setShowTransfer(true)}
-            className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold py-3 md:py-4 px-4 rounded-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg"
-          >
-            <Send className="w-5 h-5" />
-            Open Transfer Manager
-          </button>
-        </div>
-
-        {/* Info Footer */}
-        <div className="bg-gradient-to-br from-purple-900/90 to-pink-900/90 border-4 border-pink-500/50 rounded-3xl p-6 md:p-8 shadow-2xl backdrop-blur-sm">
-          <div className="text-center">
-            <p className="text-4xl md:text-5xl mb-3">🌐</p>
-            <p className="text-lg md:text-xl font-bold text-pink-200 mb-2">
-              Powered by Sui Blockchain
+            <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/30 mb-2">Network_Backbone</p>
+            <h4 className="text-xl font-black italic text-white uppercase font-heading mb-3">SUI_BETA_GRID</h4>
+            <p className="text-[10px] text-white/20 italic max-w-[280px] mx-auto">
+              "Decentralized ledger synchronization established and maintained at 100% integrity."
             </p>
-            <p className="text-xs md:text-sm text-pink-300">
-              All transactions are verified on-chain for maximum security and transparency.
-            </p>
+            <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           </div>
         </div>
+
+      </div>
+
+      {/* Animated HUD Footer */}
+      <div className="mt-12 text-center text-[8px] font-black uppercase tracking-[0.5em] text-white/10">
+        Cipher_Security_Protocol_V_1.0.4 // Connection_Steady_0ms
       </div>
     </div>
   );

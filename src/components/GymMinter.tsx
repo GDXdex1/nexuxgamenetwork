@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useCurrentAccount, useSignAndExecuteTransaction, useSuiClient } from '@mysten/dapp-kit';
-import { Loader2, Plus } from 'lucide-react';
+import { Loader2, Plus, Coins, Shield, Box, ChevronRight, Zap } from 'lucide-react';
 import { toast } from 'sonner';
 import { createMintGymTransaction } from '@/utils/mintTransactions';
 import { COIN_TYPES, formatJxcBalance } from '@/config/suiConfig';
@@ -15,7 +15,7 @@ export default function GymMinter({ onGymMinted }: GymMinterProps) {
   const account = useCurrentAccount();
   const suiClient = useSuiClient();
   const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
-  
+
   const [minting, setMinting] = useState<boolean>(false);
 
   const handleMintGym = async () => {
@@ -62,7 +62,12 @@ export default function GymMinter({ onGymMinted }: GymMinterProps) {
         {
           onSuccess: (result) => {
             console.log('Gym minted successfully:', result);
-            toast.success('Gym Building created successfully! 🏟️');
+            toast.success(
+              <div className="bg-black border border-primary/50 p-4 rounded-xl">
+                <p className="font-black text-primary uppercase text-xs mb-1 tracking-widest">Construction_Complete</p>
+                <p className="text-[10px] text-white/60 uppercase">Arena Sector Initialized Successfully.</p>
+              </div>
+            );
             onGymMinted();
           },
           onError: (error) => {
@@ -80,59 +85,100 @@ export default function GymMinter({ onGymMinted }: GymMinterProps) {
   };
 
   return (
-    <div className="bg-gradient-to-br from-purple-900/80 to-pink-900/80 border-4 border-purple-500/50 rounded-3xl p-8">
-      <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-pink-300 mb-6 text-center">
-        🏟️ Create Your Gym
-      </h2>
+    <div className="group relative bg-black/60 border border-white/10 rounded-tr-[4rem] p-12 overflow-hidden shadow-2xl">
+      <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 -translate-y-32 translate-x-32 rounded-full blur-[80px]" />
 
-      <div className="bg-black/30 rounded-2xl p-8 border-2 border-purple-500/30 mb-6">
-        <p className="text-xl text-purple-200 mb-6 text-center">
-          Mint your own Gym NFT to start hosting private battles with friends!
-        </p>
+      <div className="relative z-10 flex flex-col lg:flex-row gap-12 items-center">
+        {/* Blueprint Section */}
+        <div className="flex-1 space-y-8">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-10 h-[1px] bg-primary/40" />
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/60">Construction_Blueprints</span>
+            </div>
+            <h2 className="text-4xl font-black italic tracking-tighter text-white uppercase font-heading">
+              ARENA_SECTOR <span className="text-primary neon-text-orange">UPGRADE</span>
+            </h2>
+          </div>
 
-        <div className="max-w-md mx-auto space-y-6">
-          <div className="bg-purple-900/30 border-2 border-purple-400/30 rounded-xl p-6">
-            <p className="text-lg text-purple-200 mb-3 text-center font-bold">
-              🏟️ Gym Building NFT
-            </p>
-            <p className="text-sm text-purple-200 mb-3">
-              💰 <span className="font-bold">Cost:</span> 2,000 JXC
-            </p>
-            <p className="text-xs text-purple-300">
-              This gym will be yours forever as an NFT on the Sui blockchain. You can affiliate up to 20 trainers to your gym!
-            </p>
+          <div className="p-8 bg-white/5 border border-white/10 rounded-xl relative group/blueprint">
+            <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover/blueprint:opacity-100 transition-opacity" />
+            <div className="relative">
+              <div className="flex items-center gap-4 mb-6">
+                <Box className="w-6 h-6 text-primary" />
+                <h3 className="text-lg font-black uppercase tracking-widest">GYM_UNIT_TYPE_A</h3>
+              </div>
+              <div className="space-y-4 mb-8">
+                <div className="flex justify-between items-center border-b border-white/5 pb-2">
+                  <span className="text-[10px] font-black text-white/30 uppercase">Construction_Cost</span>
+                  <span className="text-sm font-black text-primary">2,000 JXC</span>
+                </div>
+                <div className="flex justify-between items-center border-b border-white/5 pb-2">
+                  <span className="text-[10px] font-black text-white/30 uppercase">Capacity_Nodes</span>
+                  <span className="text-sm font-black text-white">20 TRAINERS</span>
+                </div>
+                <div className="flex justify-between items-center border-b border-white/5 pb-2">
+                  <span className="text-[10px] font-black text-white/30 uppercase">Network_Type</span>
+                  <span className="text-sm font-black text-white">DECENTRALIZED_SUI</span>
+                </div>
+              </div>
+              <p className="text-[10px] text-white/30 uppercase tracking-widest leading-relaxed">
+                "This facility grants permanent sovereignty over a private battle sector. Fully tradeable on secondary data markets."
+              </p>
+            </div>
           </div>
 
           <button
             onClick={handleMintGym}
             disabled={minting}
-            className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-black py-4 px-8 rounded-2xl text-xl transition-all transform hover:scale-105 shadow-2xl flex items-center justify-center gap-3"
+            className="w-full py-6 bg-primary text-black font-black uppercase text-sm tracking-[0.4em] hover:bg-white transition-all rounded shadow-[0_0_30px_rgba(255,107,0,0.2)] disabled:opacity-20 disabled:cursor-not-allowed flex items-center justify-center gap-4"
           >
             {minting ? (
               <>
-                <Loader2 className="w-6 h-6 animate-spin" />
-                Creating Gym...
+                <Loader2 className="w-5 h-5 animate-spin" />
+                INITIALIZING_SECTOR...
               </>
             ) : (
               <>
-                <Plus className="w-6 h-6" />
-                Mint Gym NFT (2,000 JXC)
+                <Zap className="w-5 h-5 fill-current" />
+                EXECUTE_CONSTRUCTION
               </>
             )}
           </button>
         </div>
-      </div>
 
-      <div className="bg-black/20 rounded-xl p-6 border border-purple-500/20">
-        <h3 className="text-lg font-bold text-purple-300 mb-3">What's a Gym NFT?</h3>
-        <ul className="space-y-2 text-sm text-purple-200">
-          <li>✅ Your own private battle arena</li>
-          <li>✅ Invite friends for exclusive matches</li>
-          <li>✅ Track battles, wins, and losses</li>
-          <li>✅ Tradeable NFT on Sui blockchain</li>
-          <li>✅ Permanent ownership</li>
-          <li>✅ Affiliate up to 20 trainers</li>
-        </ul>
+        {/* Benefits HUD */}
+        <div className="w-full lg:w-80 bg-black border border-white/5 p-8 rounded-tr-3xl relative">
+          <div className="flex items-center gap-2 mb-8">
+            <Shield className="w-4 h-4 text-primary/60" />
+            <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">Facility_Advantages</span>
+          </div>
+
+          <ul className="space-y-6">
+            {[
+              'Private_Battle_Arena',
+              'Exclusive_Invite_Channel',
+              'Sector_Win/Loss_Tracking',
+              'Blockchain_Ownership',
+              'Neural_Network_Privacy',
+              'Affiliate_Management'
+            ].map((benefit, idx) => (
+              <li key={idx} className="flex items-center gap-3">
+                <div className="w-1 h-1 bg-primary rounded-full shadow-[0_0_5px_rgba(255,107,0,0.5)]" />
+                <span className="text-[9px] font-black text-white/60 uppercase tracking-widest">{benefit}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-12 pt-8 border-t border-white/5 text-center">
+            <p className="text-[8px] font-black text-white/20 uppercase tracking-[0.5em] mb-4">Verification_Status</p>
+            <div className="flex justify-center gap-1">
+              <div className="w-3 h-1 bg-primary rounded-full" />
+              <div className="w-4 h-1 bg-primary rounded-full" />
+              <div className="w-2 h-1 bg-primary rounded-full" />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

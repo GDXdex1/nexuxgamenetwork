@@ -1,54 +1,115 @@
 'use client';
 
+import {
+  ArrowLeft,
+  MessageSquare,
+  Users,
+  Trophy,
+  Lightbulb,
+  Gamepad2,
+  Globe,
+  Radio,
+  Signal,
+  Wifi,
+  ChevronRight,
+  ShieldAlert
+} from 'lucide-react';
+
 interface ForumProps {
   onBackToMain: () => void;
 }
 
 export default function Forum({ onBackToMain }: ForumProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-blue-900 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Banner */}
-        <div className="mb-6 relative">
-          <img
-            src="https://usdozf7pplhxfvrl.public.blob.vercel-storage.com/b015f15a-0290-46ff-823f-d6fca356a326-bzbNiJV5sdNAxbHiq08ztQgPW2bfT9"
-            alt="Forum Banner"
-            className="w-full h-56 md:h-72 lg:h-96 object-cover rounded-3xl border-4 border-indigo-500/50 shadow-2xl"
-          />
-          <button
-            onClick={onBackToMain}
-            className="absolute top-4 right-4 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-bold py-2 px-4 md:py-3 md:px-6 rounded-xl transition-all transform hover:scale-105"
-          >
-            ← Back
-          </button>
-        </div>
+    <div className="min-h-screen bg-[#010101] text-white p-4 md:p-8 relative overflow-hidden font-sans">
+      {/* Tech Grid Background */}
+      <div className="absolute inset-0 tech-bg-grid opacity-20 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-primary/5 pointer-events-none" />
 
-        <div className="max-w-4xl mx-auto bg-gradient-to-br from-indigo-900/80 to-blue-900/80 border-4 border-indigo-500/50 rounded-3xl p-12 shadow-2xl text-center">
-          <h1 className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-blue-300 mb-6">
-            💬 COMMUNITY FORUM 🌐
-          </h1>
-        <p className="text-2xl text-indigo-200 mb-8">
-          Coming Soon! 🗣️
-        </p>
-        <p className="text-xl text-indigo-300 mb-12">
-          Connect with other players, share strategies, discuss team compositions, and stay updated with the latest Jablix Arena news and events!
-        </p>
-        
-        <div className="grid grid-cols-3 gap-4 mb-12">
-          <div className="bg-black/30 rounded-2xl p-4 border-2 border-indigo-500/30">
-            <p className="text-3xl mb-2">💡</p>
-            <p className="text-sm font-bold text-indigo-200">Strategy Guides</p>
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Navigation HUD */}
+        <div className="flex flex-col md:flex-row items-center justify-between mb-12 gap-6 border-b border-primary/20 pb-8">
+          <div className="flex items-center gap-6">
+            <button
+              onClick={onBackToMain}
+              className="group relative p-4 bg-white/5 border border-white/10 hover:border-primary transition-all rounded-tr-xl flex items-center justify-center"
+            >
+              <ArrowLeft className="w-5 h-5 text-white/40 group-hover:text-primary transition-colors" />
+            </button>
+            <div className="text-left">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-8 h-[1px] bg-primary/40" />
+                <span className="text-[10px] font-black tracking-[0.3em] text-primary/60 uppercase">COMMUNITY_LINK</span>
+              </div>
+              <h1 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase font-heading">
+                NEURAL <span className="text-primary neon-text-orange">FORUM</span>
+              </h1>
+            </div>
           </div>
-          <div className="bg-black/30 rounded-2xl p-4 border-2 border-blue-500/30">
-            <p className="text-3xl mb-2">🎮</p>
-            <p className="text-sm font-bold text-blue-200">Gameplay Tips</p>
-          </div>
-          <div className="bg-black/30 rounded-2xl p-4 border-2 border-purple-500/30">
-            <p className="text-3xl mb-2">🏆</p>
-            <p className="text-sm font-bold text-purple-200">Tournaments</p>
+
+          {/* Network Status HUD */}
+          <div className="hidden lg:flex items-center gap-6 bg-black/40 border border-white/10 px-6 py-3 rounded-bl-3xl backdrop-blur-md">
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">Global_Relay: ACTIVE</span>
+            </div>
+            <div className="w-[1px] h-6 bg-white/10" />
+            <div className="flex items-center gap-2">
+              <Users className="w-4 h-4 text-primary/60" />
+              <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">Active_Nodes: 4,209</span>
+            </div>
           </div>
         </div>
 
+        {/* Main Content Card */}
+        <div className="max-w-4xl mx-auto relative group">
+          <div className="absolute inset-0 bg-primary/5 rounded-tr-[5rem] border border-white/10 group-hover:border-primary/40 transition-all duration-500" />
+          <div className="relative p-12 lg:p-20 text-center">
+            <div className="w-24 h-24 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-10 group-hover:scale-110 transition-transform duration-500">
+              <Radio className="w-12 h-12 text-primary animate-pulse" />
+            </div>
+
+            <h2 className="text-5xl lg:text-7xl font-black italic tracking-tighter text-white uppercase font-heading mb-6">
+              SIGNAL_<span className="text-primary neon-text-orange">PENDING</span>
+            </h2>
+
+            <p className="text-xs lg:text-sm text-white/40 uppercase tracking-[0.4em] mb-12 max-w-[500px] mx-auto leading-relaxed">
+              "Data transmission of community neural threads is currently suppressed. Full frequency spectrum access granted in upcoming system maintenance."
+            </p>
+
+            {/* Planned Modules HUD */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+              {[
+                { icon: Lightbulb, label: 'Strategy_Guides', detail: 'DEEP_DIVE' },
+                { icon: Gamepad2, label: 'Gameplay_Tips', detail: 'TACTICAL' },
+                { icon: Trophy, label: 'Tournament_Feed', detail: 'ELITE' }
+              ].map((item, idx) => (
+                <div key={idx} className="bg-black/60 border border-white/5 p-6 rounded-xl hover:border-primary/30 transition-all group/item">
+                  <item.icon className="w-8 h-8 text-primary/40 group-hover/item:text-primary transition-colors mx-auto mb-4" />
+                  <p className="text-[10px] font-black text-white uppercase tracking-widest mb-1">{item.label}</p>
+                  <div className="w-8 h-[1px] bg-primary/20 mx-auto group-hover/item:w-16 transition-all" />
+                </div>
+              ))}
+            </div>
+
+            <div className="flex items-center justify-center gap-6">
+              <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 bg-primary/40 rounded-full" />
+                <span className="text-[9px] font-black text-white/20 uppercase tracking-[0.3em]">Encrypted_Channels</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 bg-primary/40 rounded-full" />
+                <span className="text-[9px] font-black text-white/20 uppercase tracking-[0.3em]">Neural_Bridges</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer HUD Quote */}
+        <div className="mt-20 flex items-center justify-center gap-4 opacity-10">
+          <div className="w-12 h-[1px] bg-white" />
+          <p className="text-[9px] font-black uppercase tracking-[1em]">Knowledge_Is_The_Ultimate_Refinement</p>
+          <div className="w-12 h-[1px] bg-white" />
         </div>
       </div>
     </div>

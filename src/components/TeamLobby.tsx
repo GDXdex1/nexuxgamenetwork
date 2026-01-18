@@ -1,10 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useCurrentAccount } from '@mysten/dapp-kit';
-import { Button } from '@/components/ui/button';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertCircle, Loader2 } from 'lucide-react';
+import { AlertCircle, Loader2, ArrowLeft, Sword, Shield, Zap, Target, Layers, Box, ChevronRight, Activity, AlertTriangle } from 'lucide-react';
 import { useUserJabs } from '@/hooks/useSuiData';
 import type { Jablix } from '@/hooks/useSuiData';
 import type { BattleMode } from './BattleModeSelector';
@@ -27,10 +25,8 @@ export default function TeamLobby({ mode, betLevel, onTeamReady, onCancel }: Tea
 
   const toggleJabSelection = (jabId: string): void => {
     if (selectedTeam.includes(jabId)) {
-      // Remove from team
       setSelectedTeam(selectedTeam.filter(id => id !== jabId));
     } else {
-      // Add to team (max 3)
       if (selectedTeam.length < 3) {
         setSelectedTeam([...selectedTeam, jabId]);
       }
@@ -48,232 +44,213 @@ export default function TeamLobby({ mode, betLevel, onTeamReady, onCancel }: Tea
   };
 
   const getModeTitle = (): string => {
-    if (mode === 'random') return '🎲 Random Battle';
-    if (mode === 'ai') return '🤖 AI Battle';
-    return '⚔️ PvP Battle';
+    if (mode === 'random') return 'RANDOM_BATTLE';
+    if (mode === 'ai') return 'AI_SIMULATION';
+    return 'RANKED_PVP';
   };
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-orange-700 flex items-center justify-center relative">
-        {/* Back Button */}
-        <button
-          onClick={onCancel}
-          className="absolute top-4 left-4 z-50 transition-transform hover:scale-110"
-        >
-          <img 
-            src="https://usdozf7pplhxfvrl.public.blob.vercel-storage.com/56fa9ed2-8a4e-42ba-8746-d03370944e7d-k39OOt1uF85tIpdfal9oa1yj57AqgR"
-            alt="Back"
-            className="w-16 h-16 object-contain drop-shadow-2xl"
-          />
-        </button>
-        
+      <div className="min-h-screen bg-[#010101] flex items-center justify-center p-4">
         <div className="text-center">
-          <Loader2 className="w-16 h-16 text-white animate-spin mx-auto mb-4" />
-          <p className="text-white text-xl font-bold mb-6">Loading your Jabs...</p>
-          <Button
-            onClick={onCancel}
-            className="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-black py-3 px-8 rounded-2xl transition-all transform hover:scale-110"
-          >
-            ← Back
-          </Button>
+          <Activity className="w-12 h-12 text-primary animate-spin mx-auto mb-6" />
+          <p className="text-[10px] font-black uppercase text-white/30 tracking-[0.5em] animate-pulse">Syncing_Neural_Inventory...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-orange-700 p-4 pt-20 relative overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-pink-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-      </div>
-
-      {/* Back Button */}
-      <button
-        onClick={onCancel}
-        className="absolute top-4 left-4 z-50 transition-transform hover:scale-110"
-      >
-        <img 
-          src="https://usdozf7pplhxfvrl.public.blob.vercel-storage.com/56fa9ed2-8a4e-42ba-8746-d03370944e7d-k39OOt1uF85tIpdfal9oa1yj57AqgR"
-          alt="Back"
-          className="w-16 h-16 object-contain drop-shadow-2xl"
-        />
-      </button>
+    <div className="min-h-screen bg-[#010101] text-white p-4 md:p-8 relative overflow-hidden font-sans">
+      <div className="absolute inset-0 tech-bg-grid opacity-20 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-300 to-orange-300 mb-4">
-            {getModeTitle()} - Team Selection
-          </h1>
-          <p className="text-xl text-white font-bold mb-4">
-            Select 3 Jabs for battle
-          </p>
-          <div className="flex items-center justify-center gap-4">
-            <div className="px-6 py-3 bg-purple-900/80 rounded-full border-2 border-pink-500">
-              <span className="text-pink-300 font-bold">Bet: {betAmount} JXC</span>
+
+        {/* Navigation HUD */}
+        <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-6 border-b border-primary/20 pb-8">
+          <div className="flex items-center gap-6">
+            <button
+              onClick={onCancel}
+              className="group relative p-4 bg-white/5 border border-white/10 hover:border-primary transition-all rounded-tr-xl flex items-center justify-center"
+            >
+              <ArrowLeft className="w-5 h-5 text-white/40 group-hover:text-primary transition-colors" />
+            </button>
+            <div className="text-left">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-8 h-[1px] bg-primary/40" />
+                <span className="text-[10px] font-black tracking-[0.3em] text-primary/60 uppercase">Deployment_Center</span>
+              </div>
+              <h1 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase font-heading">
+                {getModeTitle()} <span className="text-white/20">/</span> <span className="text-primary neon-text-orange">LOBBY</span>
+              </h1>
             </div>
-            <div className="px-6 py-3 bg-orange-900/80 rounded-full border-2 border-orange-500">
-              <span className="text-orange-300 font-bold">Selected: {selectedTeam.length}/3</span>
+          </div>
+
+          {/* Selection HUD */}
+          <div className="flex items-center gap-6 bg-black/40 border border-white/10 px-8 py-3 rounded-bl-3xl backdrop-blur-md">
+            <div className="text-center">
+              <p className="text-[8px] font-black text-white/30 uppercase tracking-widest leading-none mb-1">Risk_Stake</p>
+              <p className="text-lg font-black text-primary">{betAmount} JXC</p>
+            </div>
+            <div className="w-[1px] h-8 bg-white/10" />
+            <div className="text-center">
+              <p className="text-[8px] font-black text-white/30 uppercase tracking-widest leading-none mb-1">Units_Ready</p>
+              <p className="text-lg font-black text-white">{selectedTeam.length}/3</p>
             </div>
           </div>
         </div>
 
-        {/* Alerts */}
-        {!account && (
-          <Alert className="mb-6 bg-red-900/80 border-red-500 max-w-3xl mx-auto">
-            <AlertCircle className="h-5 w-5" />
-            <AlertDescription className="text-white font-semibold">
-              ⚠️ Connect your wallet to select your team
-            </AlertDescription>
-          </Alert>
-        )}
+        {/* Selected Team Preview HUD */}
+        <div className="mb-12">
+          <div className="flex items-center gap-2 mb-6">
+            <Target className="w-4 h-4 text-primary" />
+            <h2 className="text-xs font-black text-white/40 uppercase tracking-widest">Selected_Formation</h2>
+          </div>
 
-        {userJabs && userJabs.length === 0 && (
-          <Alert className="mb-6 bg-orange-900/80 border-orange-500 max-w-3xl mx-auto">
-            <AlertCircle className="h-5 w-5" />
-            <AlertDescription className="text-white font-semibold">
-              📦 You don't have any Jabs yet. Visit Jablix Genesis to mint!
-            </AlertDescription>
-          </Alert>
-        )}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {[0, 1, 2].map((index) => {
+              const jabId = selectedTeam[index];
+              const jab = jabId ? getJabById(jabId) : null;
 
-        {userJabs && userJabs.length < 3 && userJabs.length > 0 && (
-          <Alert className="mb-6 bg-yellow-900/80 border-yellow-500 max-w-3xl mx-auto">
-            <AlertCircle className="h-5 w-5" />
-            <AlertDescription className="text-white font-semibold">
-              ⚠️ You need at least 3 Jabs to battle. You have {userJabs.length}.
-            </AlertDescription>
-          </Alert>
-        )}
-
-        {/* Selected Team Preview */}
-        {selectedTeam.length > 0 && (
-          <div className="mb-8 bg-gradient-to-br from-purple-900/80 to-pink-900/80 backdrop-blur-xl border-4 border-pink-500/50 rounded-3xl p-6 max-w-4xl mx-auto">
-            <h3 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-300 to-orange-300 mb-4 text-center">
-              Your Team
-            </h3>
-            <div className="grid grid-cols-3 gap-4">
-              {selectedTeam.map((jabId, index) => {
-                const jab = getJabById(jabId);
-                if (!jab) return null;
-                return (
-                  <div key={jabId} className="relative">
-                    <div className="bg-gradient-to-br from-purple-800 to-pink-800 rounded-xl p-3 border-2 border-pink-400">
-                      <div className="aspect-square rounded-lg overflow-hidden mb-2">
+              return (
+                <div key={index} className="group relative">
+                  {jab ? (
+                    <div className="bg-black/60 border-2 border-primary/40 rounded-tr-[2rem] p-6 flex items-center gap-6 animate-in zoom-in duration-300">
+                      <div className="w-20 h-20 relative bg-white/5 rounded-full overflow-hidden border border-white/10">
                         <img
                           src={jab.image.startsWith('http') ? jab.image : `https://ipfs.io/ipfs/${jab.image}`}
                           alt={jab.name}
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <p className="text-white font-bold text-sm text-center truncate">{jab.name}</p>
-                      <div className="absolute top-1 right-1 bg-pink-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
-                        {index + 1}
+                      <div className="flex-1">
+                        <div className="flex justify-between items-start mb-2">
+                          <p className="text-xs font-black text-white uppercase truncate max-w-[120px]">{jab.name}</p>
+                          <span className="text-[8px] font-black text-primary px-2 py-0.5 border border-primary/20 rounded">UNIT_0{index + 1}</span>
+                        </div>
+                        <div className="flex gap-4">
+                          <div className="text-center">
+                            <p className="text-[7px] font-black text-white/20 uppercase">HP</p>
+                            <p className="text-[10px] font-black text-white">{jab.hp}</p>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-[7px] font-black text-white/20 uppercase">ATK</p>
+                            <p className="text-[10px] font-black text-white">{jab.attack}</p>
+                          </div>
+                        </div>
                       </div>
+                      <button
+                        onClick={() => toggleJabSelection(jab.id)}
+                        className="absolute -top-2 -right-2 w-8 h-8 bg-black border border-white/10 rounded-full flex items-center justify-center hover:border-red-500 transition-colors"
+                      >
+                        <X className="w-4 h-4 text-white/40" />
+                      </button>
                     </div>
-                  </div>
-                );
-              })}
-              {/* Empty slots */}
-              {[...Array(3 - selectedTeam.length)].map((_, i) => (
-                <div key={`empty-${i}`} className="bg-gray-800/50 rounded-xl border-2 border-dashed border-gray-600 aspect-square flex items-center justify-center">
-                  <span className="text-gray-500 text-4xl font-bold">?</span>
+                  ) : (
+                    <div className="bg-white/5 border border-dashed border-white/10 rounded-tr-[2rem] p-8 flex flex-col items-center justify-center text-center group-hover:border-primary/20 transition-colors h-[116px]">
+                      <Layers className="w-6 h-6 text-white/10 mb-2 group-hover:text-primary/20 transition-colors" />
+                      <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">Awaiting_Selection</p>
+                    </div>
+                  )}
                 </div>
-              ))}
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Collection Grid HUD */}
+        <div className="bg-white/[0.02] border border-white/10 rounded-tr-[3rem] p-8 lg:p-12 mb-12">
+          <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
+            <div className="flex items-center gap-3">
+              <Box className="w-5 h-5 text-primary/60" />
+              <h3 className="text-xl font-black italic uppercase tracking-widest">Unit_Inventory <span className="text-[10px] text-white/20 non-italic ml-2">[{userJabs?.length || 0}_CAPACITY]</span></h3>
+            </div>
+
+            <div className="flex gap-4">
+              {!account && <div className="flex items-center gap-2 text-red-500/60 bg-red-500/5 px-4 py-1.5 rounded border border-red-500/10"><AlertTriangle className="w-3 h-3" /><span className="text-[9px] font-black uppercase tracking-widest">Connect_Wallet_To_Access</span></div>}
+              {userJabs && userJabs.length < 3 && userJabs.length > 0 && <div className="flex items-center gap-2 text-orange-500/60 bg-orange-500/5 px-4 py-1.5 rounded border border-orange-500/10"><AlertCircle className="w-3 h-3" /><span className="text-[9px] font-black uppercase tracking-widest">Insufficient_Units_For_Combat</span></div>}
             </div>
           </div>
-        )}
 
-        {/* Jabs Grid */}
-        <div className="bg-gradient-to-br from-gray-900/90 to-gray-800/90 backdrop-blur-xl border-4 border-purple-500/50 rounded-3xl p-6 mb-8">
-          <h3 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-pink-300 mb-6">
-            Your Jabs Collection ({userJabs?.length || 0})
-          </h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+            {userJabs?.map((jab) => {
+              const isSelected = selectedTeam.includes(jab.id);
+              const JabIcon = isSelected ? Shield : Zap;
 
-          {userJabs && userJabs.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {userJabs.map((jab) => {
-                const isSelected = selectedTeam.includes(jab.id);
-                const isHovered = hoveredJab === jab.id;
-
-                return (
-                  <button
-                    key={jab.id}
-                    onClick={() => toggleJabSelection(jab.id)}
-                    onMouseEnter={() => setHoveredJab(jab.id)}
-                    onMouseLeave={() => setHoveredJab(null)}
-                    className={`relative transition-all transform ${
-                      isSelected 
-                        ? 'scale-105 ring-4 ring-pink-500' 
-                        : isHovered 
-                        ? 'scale-105' 
-                        : 'hover:scale-105'
-                    }`}
-                    disabled={selectedTeam.length >= 3 && !isSelected}
-                  >
-                    <div className={`bg-gradient-to-br ${
-                      isSelected 
-                        ? 'from-pink-600 to-orange-600' 
-                        : 'from-purple-900 to-pink-900'
-                    } rounded-xl p-3 border-2 ${
-                      isSelected ? 'border-pink-400' : 'border-purple-600'
-                    }`}>
-                      <div className="aspect-square rounded-lg overflow-hidden mb-2 relative">
-                        <img
-                          src={jab.image.startsWith('http') ? jab.image : `https://ipfs.io/ipfs/${jab.image}`}
-                          alt={jab.name}
-                          className="w-full h-full object-cover"
-                        />
-                        {isSelected && (
-                          <div className="absolute inset-0 bg-pink-500/30 flex items-center justify-center">
-                            <div className="bg-pink-500 rounded-full w-12 h-12 flex items-center justify-center">
-                              <span className="text-white text-2xl font-bold">✓</span>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                      <p className="text-white font-bold text-sm truncate">{jab.name}</p>
-                      <div className="flex justify-between text-xs text-gray-300 mt-1">
-                        <span>HP: {jab.hp}</span>
-                        <span>ATK: {jab.attack}</span>
-                      </div>
-                    </div>
+              return (
+                <button
+                  key={jab.id}
+                  onClick={() => toggleJabSelection(jab.id)}
+                  disabled={selectedTeam.length >= 3 && !isSelected}
+                  className={`group relative bg-black border rounded-tr-xl overflow-hidden transition-all duration-300 ${isSelected ? 'border-primary ring-1 ring-primary/40' : 'border-white/10 hover:border-white/30'
+                    } disabled:opacity-20`}
+                >
+                  <div className="aspect-square relative bg-white/5">
+                    <img
+                      src={jab.image.startsWith('http') ? jab.image : `https://ipfs.io/ipfs/${jab.image}`}
+                      alt={jab.name}
+                      className={`w-full h-full object-cover transition-transform duration-500 ${isSelected ? 'scale-110' : 'group-hover:scale-110'}`}
+                    />
                     {isSelected && (
-                      <div className="absolute -top-2 -right-2 bg-pink-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold border-2 border-white">
-                        {selectedTeam.indexOf(jab.id) + 1}
+                      <div className="absolute inset-0 bg-primary/20 flex items-center justify-center animate-pulse">
+                        <div className="bg-primary text-black p-2 rounded-full shadow-[0_0_20px_rgba(255,107,0,0.5)]">
+                          <Sword className="w-6 h-6 fill-current" />
+                        </div>
                       </div>
                     )}
-                  </button>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-gray-400 text-lg">No Jabs found in your wallet</p>
-            </div>
-          )}
+                  </div>
+
+                  <div className="p-4 bg-black/60 backdrop-blur-md">
+                    <p className="text-[10px] font-black text-white uppercase truncate mb-1">{jab.name}</p>
+                    <div className="flex justify-between items-center">
+                      <div className="flex gap-2">
+                        <span className="text-[8px] font-black text-white/40 uppercase">A:{jab.attack}</span>
+                        <span className="text-[8px] font-black text-white/40 uppercase">H:{jab.hp}</span>
+                      </div>
+                      <JabIcon className={`w-3 h-3 ${isSelected ? 'text-primary' : 'text-white/20'}`} />
+                    </div>
+                  </div>
+
+                  {isSelected && (
+                    <div className="absolute top-0 right-0 w-8 h-8 bg-primary rounded-bl-xl flex items-center justify-center text-black font-black text-xs">
+                      {selectedTeam.indexOf(jab.id) + 1}
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex justify-center gap-4">
-          <Button
+        {/* Global Action HUD */}
+        <div className="flex flex-col sm:flex-row justify-center gap-6 mt-12 animate-in slide-in-from-bottom-6 duration-700">
+          <button
             onClick={onCancel}
-            className="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-black py-6 px-12 rounded-2xl text-xl transition-all transform hover:scale-110"
+            className="px-12 py-5 bg-white/5 border border-white/10 text-white/60 hover:text-white hover:border-red-500 transition-all rounded font-black uppercase text-xs tracking-[0.4em]"
           >
-            ❌ Cancel
-          </Button>
-          <Button
+            Abort_Deployment
+          </button>
+          <button
             onClick={handleStartBattle}
             disabled={selectedTeam.length !== 3}
-            className="bg-gradient-to-r from-green-600 via-emerald-600 to-green-600 hover:from-green-700 hover:via-emerald-700 hover:to-green-700 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-black py-6 px-12 rounded-2xl text-xl transition-all transform hover:scale-110 disabled:scale-100"
+            className="px-16 py-5 bg-primary text-black font-black uppercase text-xs tracking-[0.4em] hover:bg-white transition-all rounded shadow-lg shadow-primary/20 disabled:opacity-20 flex items-center gap-4 justify-center"
           >
-            {selectedTeam.length === 3 ? '⚔️ START BATTLE' : `SELECT ${3 - selectedTeam.length} MORE`}
-          </Button>
+            {selectedTeam.length === 3 ? (
+              <>
+                <Sword className="w-4 h-4 fill-current" />
+                INIT_COMBAT_SEQUENCE
+              </>
+            ) : (
+              <>
+                SELECT_{3 - selectedTeam.length}_MORE_UNITS
+              </>
+            )}
+          </button>
         </div>
+
       </div>
     </div>
   );
 }
+
+import { X } from 'lucide-react';

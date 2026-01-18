@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { ResponseLogger } from "@/components/response-logger";
 import { cookies } from "next/headers";
@@ -8,7 +8,15 @@ import { Providers } from "./providers";
 import FarcasterWrapper from "@/components/FarcasterWrapper";
 import NetworkBadge from "@/components/NetworkBadge";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: '--font-inter',
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: '--font-outfit',
+});
 
 export default async function RootLayout({
   children,
@@ -19,12 +27,12 @@ export default async function RootLayout({
   const requestId = cookieStore.get("x-request-id")?.value;
 
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         {requestId && <meta name="x-request-id" content={requestId} />}
       </head>
       <body
-        className={`${inter.className} antialiased`}
+        className={`${inter.variable} ${outfit.variable} font-sans antialiased bg-background text-foreground`}
       >
         {/* Do not remove this component, we use it to notify the parent that the mini-app is ready */}
         <ReadyNotifier />
@@ -34,7 +42,9 @@ export default async function RootLayout({
             <div className="fixed top-4 left-4 z-50">
               <NetworkBadge size="small" />
             </div>
-            {children}
+            <main className="min-h-screen">
+              {children}
+            </main>
           </FarcasterWrapper>
         </Providers>
         <ResponseLogger />
