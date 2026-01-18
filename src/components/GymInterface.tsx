@@ -24,7 +24,8 @@ import {
   Radio,
   Gamepad2,
   Trash2,
-  ExternalLink
+  ExternalLink,
+  Activity
 } from 'lucide-react';
 import { toast } from 'sonner';
 

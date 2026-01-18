@@ -5,7 +5,7 @@ import { useCurrentAccount } from '@mysten/dapp-kit';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Users, Bot, Dumbbell, AlertCircle } from 'lucide-react';
+import { Users, Bot, Dumbbell, AlertCircle, ArrowLeft } from 'lucide-react';
 
 export type BattleMode = 'random' | 'ai' | 'gym';
 
@@ -88,8 +88,8 @@ export default function BattleModeSelector({ onModeSelect, onBack }: BattleModeS
           <div
             onClick={() => account && handleModeSelect('random')}
             className={`group relative h-[400px] bg-black border cursor-pointer overflow-hidden transition-all duration-500 ${!account
-                ? 'opacity-40 grayscale cursor-not-allowed border-white/5'
-                : 'border-primary/20 hover:border-primary hover:shadow-[0_0_40px_rgba(255,107,0,0.1)]'
+              ? 'opacity-40 grayscale cursor-not-allowed border-white/5'
+              : 'border-primary/20 hover:border-primary hover:shadow-[0_0_40px_rgba(255,107,0,0.1)]'
               }`}
           >
             {/* Design Elements */}
@@ -132,8 +132,8 @@ export default function BattleModeSelector({ onModeSelect, onBack }: BattleModeS
           <div
             onClick={() => account && handleModeSelect('ai')}
             className={`group relative h-[400px] bg-black border cursor-pointer overflow-hidden transition-all duration-500 ${!account
-                ? 'opacity-40 grayscale cursor-not-allowed border-white/5'
-                : 'border-blue-500/20 hover:border-blue-500 hover:shadow-[0_0_40px_rgba(59,130,246,0.1)]'
+              ? 'opacity-40 grayscale cursor-not-allowed border-white/5'
+              : 'border-blue-500/20 hover:border-blue-500 hover:shadow-[0_0_40px_rgba(59,130,246,0.1)]'
               }`}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -170,8 +170,8 @@ export default function BattleModeSelector({ onModeSelect, onBack }: BattleModeS
           <div
             onClick={() => account && handleModeSelect('gym')}
             className={`group relative h-[400px] bg-black border cursor-pointer overflow-hidden transition-all duration-500 ${!account
-                ? 'opacity-40 grayscale cursor-not-allowed border-white/5'
-                : 'border-purple-500/20 hover:border-purple-500 hover:shadow-[0_0_40px_rgba(168,85,247,0.1)]'
+              ? 'opacity-40 grayscale cursor-not-allowed border-white/5'
+              : 'border-purple-500/20 hover:border-purple-500 hover:shadow-[0_0_40px_rgba(168,85,247,0.1)]'
               }`}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />

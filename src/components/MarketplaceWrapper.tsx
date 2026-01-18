@@ -1,3 +1,19 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useCurrentAccount, useSignAndExecuteTransaction } from '@mysten/dapp-kit';
+import { useSuiData, extractJablixData } from '@/hooks/useSuiData';
+
+import { toast } from 'sonner';
+import {
+  createListElementalTransaction,
+  createListSpecialTransaction,
+  createBuyElementalTransaction,
+  createBuySpecialTransaction,
+  createDelistTransaction,
+  formatMarketplaceTxResult,
+  calculateTotalCost
+} from '@/utils/marketplaceTransactions';
 import {
   ShoppingBag,
   ArrowLeft,
@@ -302,8 +318,8 @@ export default function MarketplaceWrapper({ onBackToMain }: MarketplaceWrapperP
             <button
               onClick={() => setSelectedTab('marketplace')}
               className={`flex-1 lg:flex-none px-8 py-3 font-black uppercase text-[11px] tracking-widest transition-all rounded ${selectedTab === 'marketplace'
-                  ? 'bg-primary text-black shadow-[0_0_20px_rgba(255,107,0,0.3)]'
-                  : 'text-white/40 hover:text-white hover:bg-white/5'
+                ? 'bg-primary text-black shadow-[0_0_20px_rgba(255,107,0,0.3)]'
+                : 'text-white/40 hover:text-white hover:bg-white/5'
                 }`}
             >
               <div className="flex items-center gap-2">
@@ -314,8 +330,8 @@ export default function MarketplaceWrapper({ onBackToMain }: MarketplaceWrapperP
             <button
               onClick={() => setSelectedTab('my_nfts')}
               className={`flex-1 lg:flex-none px-8 py-3 font-black uppercase text-[11px] tracking-widest transition-all rounded ${selectedTab === 'my_nfts'
-                  ? 'bg-primary text-black shadow-[0_0_20px_rgba(255,107,0,0.3)]'
-                  : 'text-white/40 hover:text-white hover:bg-white/5'
+                ? 'bg-primary text-black shadow-[0_0_20px_rgba(255,107,0,0.3)]'
+                : 'text-white/40 hover:text-white hover:bg-white/5'
                 }`}
             >
               <div className="flex items-center gap-2">
@@ -528,8 +544,8 @@ export default function MarketplaceWrapper({ onBackToMain }: MarketplaceWrapperP
                     onClick={handleListNFT}
                     disabled={isProcessing || !listingPrice || parseFloat(listingPrice) <= 0}
                     className={`py-4 font-black uppercase text-[11px] tracking-widest transition-all rounded shadow-lg ${isProcessing || !listingPrice || parseFloat(listingPrice) <= 0
-                        ? 'bg-white/5 text-white/20 cursor-not-allowed'
-                        : 'bg-primary text-black hover:bg-white shadow-primary/20'
+                      ? 'bg-white/5 text-white/20 cursor-not-allowed'
+                      : 'bg-primary text-black hover:bg-white shadow-primary/20'
                       }`}
                   >
                     {isProcessing ? 'Fabricating...' : 'Execute_Listing'}

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useCurrentAccount } from '@mysten/dapp-kit';
-import { AlertCircle, Loader2, ArrowLeft, Sword, Shield, Zap, Target, Layers, Box, ChevronRight, Activity, AlertTriangle } from 'lucide-react';
+import { AlertCircle, Loader2, ArrowLeft, Sword, Shield, Zap, Target, Layers, Box, ChevronRight, Activity, AlertTriangle, X } from 'lucide-react';
 import { useUserJabs } from '@/hooks/useSuiData';
 import type { Jablix } from '@/hooks/useSuiData';
 import type { BattleMode } from './BattleModeSelector';
@@ -253,4 +253,4 @@ export default function TeamLobby({ mode, betLevel, onTeamReady, onCancel }: Tea
   );
 }
 
-import { X } from 'lucide-react';
+

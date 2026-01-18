@@ -1,3 +1,12 @@
+'use client';
+
+import { useState } from 'react';
+import { useCurrentAccount, useSignAndExecuteTransaction } from '@mysten/dapp-kit';
+import { useSuiData } from '@/hooks/useSuiData';
+import { ELEMENTAL_JABLIX_DATABASE, type ElementalJablixData, getAllMintableElementals } from '@/data/elementalJablixDatabase';
+import { SPECIAL_JABLIX_DATABASE, type SpecialJablixData, getAllMintableSpecials } from '@/data/specialJablixDatabase';
+import { toast } from 'sonner';
+import { createMintElementalTransaction, createMintSpecialTransaction, formatMintTxResult } from '@/utils/mintTransactions';
 import {
   Zap,
   ArrowLeft,
@@ -10,7 +19,8 @@ import {
   Box,
   Target,
   Info,
-  ChevronRight
+  ChevronRight,
+  Heart
 } from 'lucide-react';
 
 interface JablixGenesisWrapperProps {
@@ -141,8 +151,8 @@ export default function JablixGenesisWrapper({ onBackToMain }: JablixGenesisWrap
               setSelectedJablix(null);
             }}
             className={`flex-1 relative overflow-hidden group py-6 px-8 rounded transition-all duration-300 ${selectedTab === 'elemental'
-                ? 'bg-primary/20 border-t-2 border-primary'
-                : 'bg-white/5 border border-white/5 hover:bg-white/10'
+              ? 'bg-primary/20 border-t-2 border-primary'
+              : 'bg-white/5 border border-white/5 hover:bg-white/10'
               }`}
           >
             <div className={`flex flex-col items-center justify-center gap-2 ${selectedTab === 'elemental' ? 'text-primary' : 'text-white/40'}`}>
@@ -159,8 +169,8 @@ export default function JablixGenesisWrapper({ onBackToMain }: JablixGenesisWrap
               setSelectedJablix(null);
             }}
             className={`flex-1 relative overflow-hidden group py-6 px-8 rounded transition-all duration-300 ${selectedTab === 'special'
-                ? 'bg-purple-500/20 border-t-2 border-purple-500'
-                : 'bg-white/5 border border-white/5 hover:bg-white/10'
+              ? 'bg-purple-500/20 border-t-2 border-purple-500'
+              : 'bg-white/5 border border-white/5 hover:bg-white/10'
               }`}
           >
             <div className={`flex flex-col items-center justify-center gap-2 ${selectedTab === 'special' ? 'text-purple-400' : 'text-white/40'}`}>
@@ -179,8 +189,8 @@ export default function JablixGenesisWrapper({ onBackToMain }: JablixGenesisWrap
               key={jablix.id}
               onClick={() => setSelectedJablix(jablix)}
               className={`relative bg-black border p-2 group cursor-pointer transition-all duration-300 rounded-tr-xl overflow-hidden ${selectedJablix?.id === jablix.id
-                  ? (selectedTab === 'elemental' ? 'border-primary ring-1 ring-primary/50' : 'border-purple-500 ring-1 ring-purple-500/50')
-                  : 'border-white/10 hover:border-white/30'
+                ? (selectedTab === 'elemental' ? 'border-primary ring-1 ring-primary/50' : 'border-purple-500 ring-1 ring-purple-500/50')
+                : 'border-white/10 hover:border-white/30'
                 }`}
             >
               <div className="aspect-square bg-white/5 rounded-bl-xl overflow-hidden mb-3 relative">
@@ -308,8 +318,8 @@ export default function JablixGenesisWrapper({ onBackToMain }: JablixGenesisWrap
                   onClick={handleMint}
                   disabled={isMinting || jxcBalance < mintCost || !account}
                   className={`w-full py-5 rounded-bl-2xl font-black uppercase text-sm tracking-[0.2em] transition-all relative overflow-hidden group/btn ${isMinting || jxcBalance < mintCost || !account
-                      ? 'bg-white/5 text-white/20 cursor-not-allowed'
-                      : 'bg-primary text-black hover:bg-white hover:text-primary shadow-[0_0_30px_rgba(255,107,0,0.3)]'
+                    ? 'bg-white/5 text-white/20 cursor-not-allowed'
+                    : 'bg-primary text-black hover:bg-white hover:text-primary shadow-[0_0_30px_rgba(255,107,0,0.3)]'
                     }`}
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">

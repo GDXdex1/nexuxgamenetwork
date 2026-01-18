@@ -26,7 +26,8 @@ import {
   TrendingUp,
   LayoutDashboard,
   ShieldCheck,
-  AlertTriangle
+  AlertTriangle,
+  X
 } from 'lucide-react';
 
 interface AdminPanelProps {
@@ -361,8 +362,8 @@ export default function AdminPanel({ onBackToMain }: AdminPanelProps) {
               onClick={handleTogglePause}
               disabled={isLoading}
               className={`w-full py-5 font-black uppercase text-xs tracking-widest transition-all rounded flex items-center justify-center gap-3 ${treasury?.paused
-                  ? 'bg-green-600 text-white hover:bg-green-700'
-                  : 'bg-yellow-600 text-black hover:bg-white'
+                ? 'bg-green-600 text-white hover:bg-green-700'
+                : 'bg-yellow-600 text-black hover:bg-white'
                 }`}
             >
               {treasury?.paused ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
@@ -401,5 +402,4 @@ export default function AdminPanel({ onBackToMain }: AdminPanelProps) {
   );
 }
 
-// Add X to lucide imports at top
-import { X } from 'lucide-react';
+

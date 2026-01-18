@@ -201,7 +201,7 @@ export default function Matchmaking({ mode, selectedTeam, betLevel, onMatchFound
               )}
 
               <button
-                onClick={cancelSearch}
+                onClick={onCancel}
                 className="w-full py-5 bg-white/5 border border-white/10 text-white/40 hover:text-white hover:border-red-500/50 transition-all rounded font-black uppercase text-[10px] tracking-[0.4em]"
               >
                 HALT_SEARCH_OP

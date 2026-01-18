@@ -29,7 +29,8 @@ import {
   Box,
   ChevronRight,
   TrendingUp,
-  Info
+  Info,
+  Coins
 } from 'lucide-react';
 import { getElementalJablixData } from '@/data/elementalJablixDatabase';
 import { getSpecialJablixData } from '@/data/specialJablixDatabase';
@@ -206,7 +207,7 @@ export default function JablixEvolution({ onBackToMain }: JablixEvolutionProps) 
                   </div>
                   <div className="text-right">
                     <p className="text-[8px] font-black text-white/20 uppercase">Chain_ID</p>
-                    <p className="text-[10px] font-black text-primary/60 uppercase">{p1?.type || 'CORE'}</p>
+                    <p className="text-[10px] font-black text-primary/60 uppercase">{p1?.elements[0] || 'CORE'}</p>
                   </div>
                 </div>
               );

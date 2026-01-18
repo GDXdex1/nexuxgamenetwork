@@ -149,8 +149,8 @@ export default function JablixBook({ onBackToMain }: JablixBookProps) {
               key={tab.id}
               onClick={() => setSection(tab.id as BookSection)}
               className={`px-8 py-4 font-black uppercase text-[11px] tracking-widest transition-all rounded flex items-center gap-3 ${section === tab.id
-                  ? 'bg-primary text-black shadow-[0_0_30px_rgba(255,107,0,0.3)]'
-                  : 'bg-white/5 text-white/40 border border-white/10 hover:border-primary/50'
+                ? 'bg-primary text-black shadow-[0_0_30px_rgba(255,107,0,0.3)]'
+                : 'bg-white/5 text-white/40 border border-white/10 hover:border-primary/50'
                 }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -172,8 +172,8 @@ export default function JablixBook({ onBackToMain }: JablixBookProps) {
                 <button
                   onClick={() => setSelectedElement(null)}
                   className={`px-4 py-3 rounded border font-black uppercase text-[9px] tracking-widest transition-all ${selectedElement === null
-                      ? 'bg-primary border-primary text-black'
-                      : 'bg-white/5 border-white/10 text-white/40 hover:border-primary/40'
+                    ? 'bg-primary border-primary text-black'
+                    : 'bg-white/5 border-white/10 text-white/40 hover:border-primary/40'
                     }`}
                 >
                   All_Signals
@@ -185,8 +185,8 @@ export default function JablixBook({ onBackToMain }: JablixBookProps) {
                       key={element}
                       onClick={() => setSelectedElement(element)}
                       className={`px-4 py-2 rounded border font-black uppercase text-[9px] tracking-widest transition-all flex items-center justify-center gap-2 ${selectedElement === element
-                          ? 'bg-primary border-primary text-black'
-                          : 'bg-white/5 border-white/10 text-white/40 hover:border-primary/40'
+                        ? 'bg-primary border-primary text-black'
+                        : 'bg-white/5 border-white/10 text-white/40 hover:border-primary/40'
                         }`}
                     >
                       <Icon className="w-3 h-3" />
@@ -239,7 +239,7 @@ export default function JablixBook({ onBackToMain }: JablixBookProps) {
                           <div className="flex justify-between items-start mb-4">
                             <div>
                               <h3 className="text-sm font-black text-white uppercase group-hover:text-primary transition-colors">{jablix.name}</h3>
-                              <p className="text-[10px] font-mono text-white/30 truncate max-w-[120px]">UNIT_0X{jablix.id.slice(0, 6)}</p>
+                              <p className="text-[10px] font-mono text-white/30 truncate max-w-[120px]">UNIT_0X{String(jablix.id).slice(0, 6)}</p>
                             </div>
                             <div className="flex gap-1">
                               {jablix.elements.map((element: Element, idx: number) => {
