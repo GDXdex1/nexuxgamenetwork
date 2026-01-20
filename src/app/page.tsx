@@ -68,27 +68,7 @@ export default function DrariuxNetworkHome() {
   }, [])
   return (
     <div className="min-h-screen bg-[#010101] text-foreground font-sans relative overflow-hidden">
-      {/* Background Decorative Tech-Lines */}
-      <div className="absolute inset-0 pointer-events-none opacity-20">
-        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-        <div className="absolute top-1/4 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-      </div>
 
-      {/* Hero Banner with Glow */}
-      <div className="relative w-full h-48 md:h-72 group">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#010101] z-10" />
-        <div className="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors duration-700 z-0" />
-        <Image
-          src="https://usdozf7pplhxfvrl.public.blob.vercel-storage.com/c57d50df-5ec5-442f-bd81-d02b08d10aa0-VaHNp7c3H2Qpm0zM8iGtJbbPxkG3s5"
-          alt="Drariux Network"
-          fill
-          className="object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
-          priority
-        />
-        {/* Animated Accent Line */}
-        <div className="absolute bottom-0 left-0 w-full h-[2px] bg-primary shadow-[0_0_15px_rgba(255,107,0,0.8)] z-20" />
-      </div>
 
       {/* Main Content Area */}
       <div className="container mx-auto px-6 py-12 relative z-20">
